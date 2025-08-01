@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Infinity Nikki Clocks & Timezone Converter (Beta)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Nunito', sans-serif;
+        background-color: #FFF0F5;
+        background-image: radial-gradient(#F8E0E6 1px, transparent 1px);
+        background-size: 16px 16px;
+        color: #735D65;
+        margin: 0;
+        padding: 20px;
+        text-align: center;
+        transition: background-color 0.3s, color 0.3s;
+        user-select: none;
+    }
+
+    .title-container {
+        margin: 0 auto 25px auto; /* Adjusted margin-bottom for spacing below title and above buttons */
+        padding: 1.5rem 2rem;
+        border-radius: 20px;
+        background: #FFFFFF;
+        box-shadow: 0 5px 20px rgba(217, 138, 158, 0.1);
+        max-width: 900px;
+    }
+
+    h1 {
+        font-family: 'Nunito', sans-serif;
+        font-weight: 700;
+        color: #E6A4B4;
+        margin: 0;
+        font-size: clamp(24px, 4vw, 38px);
+        line-height: 1.2;
+    }
+
+    h1 span {
+        font-size: 0.5em;
+        vertical-align: middle;
+        font-weight: normal;
+        color: #F2C4D2;
+        letter-spacing: 0.03em;
+    }
+
+    /* New navigation button styles */
+    .top-navigation-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 10px; /* Space between buttons */
+        margin: 0 auto 25px auto; /* Centered the container and added margin-bottom */
+        width: 100%;
+        max-width: 700px; /* Align with container width */
+        flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+    }
+
+    .top-navigation-buttons a {
+        display: inline-block;
+        padding: 8px 15px; /* Smaller padding */
+        background-color: #E6A4B4; /* Solid color matching the main accent */
+        color: white;
+        text-decoration: none;
+        border-radius: 15px;
+        font-size: 0.95em; /* Smaller font size */
+        font-weight: bold;
+        font-family: 'Nunito', sans-serif;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: 0 4px 10px rgba(230, 164, 180, 0.3);
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        text-align: center;
+        flex-grow: 1; /* Allow buttons to grow and fill space */
+        max-width: 250px; /* Limit individual button width */
+    }
+
+    .top-navigation-buttons a:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(230, 164, 180, 0.4);
+    }
+    
+    .top-navigation-buttons a:active {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(230, 164, 180, 0.3);
+    }
+
+
+    main {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1.5rem;
+        align-items: stretch;
+        margin: 0 auto 1.5rem auto;
+        max-width: 900px;
+    }
+
+    #timezone-converter,
+    .server-card {
+        width: 300px; /* Set a fixed width for uniformity */
+        padding: 20px;
+        border: 1px solid #F8E0E6;
+        border-radius: 15px;
+        background: #FDF7FA;
+        box-shadow: 0 4px 15px rgba(230, 164, 180, 0.05);
+        font-family: 'Nunito', sans-serif;
+        color: #735D65;
+        text-align: left;
+        user-select: text;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+    
+    #timezone-converter:hover,
+    .server-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(230, 164, 180, 0.15);
+    }
+
+    #timezone-converter h2,
+    .server-card h2 {
+        text-align: center;
+        margin: 0 0 1rem 0;
+        font-size: 1.3em;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        color: #E6A4B4;
+        border-bottom: 2px dashed #F8E0E6;
+        padding-bottom: 10px;
+    }
+
+    .time-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: 'Nunito', sans-serif;
+    }
+
+    .time-table td {
+        padding: 0.5rem;
+        font-weight: 600;
+        font-size: 1rem;
+    }
+
+    .time-table tr + tr td {
+        border-top: 1px solid #F8E0E6;
+    }
+
+    /* Dark Pastel Theme */
+    body.dark {
+        background-color: #4c3b4d;
+        color: #F8E0E6;
+        background-image: radial-gradient(#6c5b7b 1px, transparent 1px);
+    }
+    body.dark .title-container {
+        background: #3a2e3a;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    }
+    body.dark .title-container h1 {
+        color: #E6A4B4;
+    }
+    body.dark .title-container h1 span {
+        color: #b48ead;
+    }
+    body.dark .top-navigation-buttons a {
+        background-color: #b48ead; /* Dark mode button color */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    body.dark .top-navigation-buttons a:hover {
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    }
+    body.dark .top-navigation-buttons a:active {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    body.dark #timezone-converter,
+    body.dark .server-card {
+        background: #6c5b7b;
+        border-color: #8c7b9b;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        color: #F8E0E6;
+    }
+    body.dark #timezone-converter h2,
+    body.dark .server-card h2 {
+        color: #F2C4D2;
+        border-bottom-color: #8c7b9b;
+    }
+    body.dark select, body.dark input {
+        background-color: #4c3b4d;
+        border-color: #8c7b9b;
+        color: #F8E0E6;
+    }
+    body.dark select:focus, body.dark input:focus {
+        border-color: #E6A4B4;
+        background-color: #3a2e3a;
+        box-shadow: 0 0 0 3px rgba(230, 164, 180, 0.3);
+        color: #fff;
+    }
+    body.dark .time-table tr + tr td {
+      border-top-color: #8c7b9b;
+    }
+    body.dark nav.button-group {
+        background: #3a2e3a;
+        border-color: #8c7b9b;
+        box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    }
+    body.dark nav.button-group button {
+        color: #F8E0E6;
+        border-right-color: #8c7b9b;
+    }
+    body.dark nav.button-group button:hover,
+    body.dark nav.button-group button:focus {
+        background-color: #4c3b4d;
+        color: #fff;
+    }
+    body.dark nav.button-group button.active {
+        background-color: #E6A4B4;
+        color: #4c3b4d;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+    }
+    body.dark footer {
+        color: #b48ead;
+    }
+    body.dark footer a {
+        color: #F2C4D2;
+    }
+
+    .sr-only {
+        position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+        overflow: hidden; clip: rect(0,0,0,0); border: 0;
+    }
+
+    nav.button-group {
+        display: inline-flex;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        border: 1px solid #F8E0E6;
+        border-radius: 15px;
+        background: #FDF7FA;
+        box-shadow: 0 4px 15px rgba(230, 164, 180, 0.1);
+        user-select: none;
+        overflow: hidden;
+    }
+
+    nav.button-group button {
+        font-family: 'Nunito', sans-serif;
+        font-weight: 700;
+        padding: 0.8rem 1.8rem;
+        border: none;
+        border-right: 1px solid #F8E0E6;
+        background: transparent;
+        color: #9B868C;
+        cursor: pointer;
+        transition: background-color 0.2s, color 0.2s;
+        font-size: 1rem;
+    }
+
+    nav.button-group button:last-child {
+        border-right: none;
+    }
+
+    nav.button-group button:hover,
+    nav.button-group button:focus {
+        background-color: #F8E0E6;
+        outline: none;
+        color: #E6A4B4;
+    }
+
+    nav.button-group button.active {
+        background-color: #E6A4B4;
+        color: white;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    #timezone-converter form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      flex-grow: 1;
+    }
+
+    #timezone-converter label {
+      margin-bottom: 0.2rem;
+      font-weight: 700;
+    }
+
+    #timezone-converter select,
+    #timezone-converter input[type="text"],
+    #timezone-converter input[type="date"] { /* Added type="date" here */
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #F8E0E6;
+        border-radius: 10px;
+        font-size: 1em;
+        font-family: 'Nunito', sans-serif;
+        color: #735D65;
+        background-color: #fff;
+        outline: none;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    #timezone-converter select:focus,
+    #timezone-converter input[type="text"]:focus,
+    #timezone-converter input[type="date"]:focus { /* Added type="date" here */
+        border-color: #E6A4B4;
+        box-shadow: 0 0 0 3px rgba(230, 164, 180, 0.3);
+    }
+
+    #result {
+      margin-top: auto;
+      padding-top: 1rem;
+      font-weight: 700;
+      color: #E6A4B4;
+    }
+    body.dark #result {
+      color: #F2C4D2;
+    }
+
+    footer {
+        margin-top: 2rem;
+        padding: 1rem;
+        font-size: 0.9em;
+        color: #9B868C;
+    }
+
+    footer a {
+        color: #E6A4B4;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    footer a:hover {
+        color: #D98A9E;
+        text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      body { margin: 0; padding: 1rem 1rem 6rem 1rem; }
+      .title-container { padding: 1rem 1.2rem; margin-bottom: 1rem; }
+      /* Responsive adjustments for top navigation buttons */
+      .top-navigation-buttons {
+          flex-direction: column;
+          gap: 8px;
+          margin-bottom: 15px;
+          padding: 0 15px;
+      }
+      .top-navigation-buttons a {
+          max-width: 100%;
+          padding: 10px 15px;
+          font-size: 0.9em;
+      }
+      main { gap: 1rem; }
+      #timezone-converter, .server-card { flex: 1 1 100%; max-width: 100%; }
+      nav.button-group {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        z-index: 1000;
+        border-radius: 0;
+        border-width: 1px 0 0 0;
+        margin-bottom: 0;
+        box-shadow: 0 -4px 15px rgba(230, 164, 180, 0.15);
+      }
+      body.dark nav.button-group {
+        box-shadow: 0 -4px 15px rgba(0,0,0,0.2);
+      }
+      nav.button-group button { flex-grow: 1; padding: 1rem 0.5rem; font-size: 0.9rem; }
+    }
+  </style>
+
+</head>
+<body>
+  <div class="title-container" role="banner">
+    <h1>
+      Infinity Nikki<br />
+      Clocks & Timezone Converter <span>(Beta)</span>
+    </h1>
+  </div>
+
+  <div class="top-navigation-buttons">
+      <a href="https://rewvyu.tumblr.com/" target="_blank">Home</a>
+      <a href="https://rewvyu.tumblr.com/rewvyu_calculator" target="_blank">Calculator</a>
+  </div>
+
+  <nav class="button-group" aria-label="Primary navigation">
+    <button id="btnAll" type="button" title="Show All Clocks" aria-label="Show all clocks">ALL</button>
+    <button id="btnAsia" type="button" title="Show Asia Server Clocks" aria-label="Show Asia server clocks">AS</button>
+    <button id="btnEU" type="button" title="Show Europe Server Clocks" aria-label="Show Europe server clocks">EU</button>
+    <button id="btnNA" type="button" title="Show North America Server Clocks" aria-label="Show North America server clocks">NA</button>
+    <button id="btnThemeToggle" type="button" title="Toggle Dark/Light Mode" aria-label="Toggle Dark or Light Mode">Theme</button>
+  </nav>
+
+  <main id="main-content" aria-live="polite" aria-atomic="true">
+    <section id="timezone-converter" aria-label="Timezone converter section">
+      <h2>Timezone Converter</h2>
+      <form id="tzConverterForm" aria-label="Timezone converter form" autocomplete="off">
+        <label for="fromTz">From Timezone:</label>
+        <select id="fromTz" name="fromTz" required></select>
+        
+        <label for="toTz">To Timezone:</label>
+        <select id="toTz" name="toTz" required></select>
+
+        <label for="dateInput">Date:</label>
+        <input type="date" id="dateInput" name="dateInput"
+          title="Select date"
+          required />
+
+        <label for="timeInput">Time (24hr format):</label>
+        <input
+          type="text"
+          id="timeInput"
+          name="timeInput"
+          placeholder="HH:mm:ss"
+          pattern="^([01]\\d|2[0-3]):([0-5]\\d):([0-5]\\d)$"
+          title="Enter time as HH:mm:ss in 24-hour format"
+          required
+          autocomplete="off"
+        />
+      </form>
+      <div id="result" aria-live="polite" aria-atomic="true">Conversion Result: --</div>
+    </section>
+
+    <section class="server-card" id="asia-server" aria-label="Asia Server Time (UTC+8)">
+      <h2>Asia Server Time (UTC+8)</h2>
+      <table class="time-table">
+        <tbody>
+          <tr>
+            <td>Server Time Now</td>
+            <td id="asiaServerTime">--:--:--</td>
+          </tr>
+          <tr>
+            <td>Your Time Now</td>
+            <td id="localTimeAsia">--:--:--</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="server-card" id="daily-reset-as" aria-label="Daily Reset Clock Asia Server">
+      <h2>Daily Reset Clock (AS)</h2>
+      <table class="time-table">
+        <tbody>
+          <tr>
+            <td>Next Reset Server Time</td>
+            <td id="nextResetServerTimeAS">--</td>
+          </tr>
+          <tr>
+            <td>Next Reset Your Time</td>
+            <td id="nextResetLocalTimeAS">--</td>
+          </tr>
+          <tr>
+            <td>Countdown Till Next Reset</td>
+            <td id="countdownResetAS">--</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="server-card" id="daily-soiree-as" aria-label="Daily Soiree Clock Asia Server">
+      <h2>Daily Soiree Clock (AS)</h2>
+      <table class="time-table">
+        <tbody>
+          <tr>
+            <td>Next Soiree Starts At<br>Server Time</td>
+            <td id="nextSoireeServerTimeAS">--</td>
+          </tr>
+          <tr>
+            <td>Next Soiree Starts At<br>Your Time</td>
+            <td id="nextSoireeLocalTimeAS">--</td>
+          </tr>
+          <tr>
+            <td><span id="soireeCountdownLabelAS">Countdown Till Next Soiree</span></td>
+            <td id="countdownSoireeAS">--</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="server-card" id="weekly-reset-as" aria-label="Weekly Reset Clock Asia Server">
+      <h2>Weekly Reset Clock (AS)</h2>
+      <table class="time-table">
+        <tbody>
+          <tr>
+            <td>Next Reset Server Time</td>
+            <td id="nextWeeklyResetServerTimeAS">--</td>
+          </tr>
+          <tr>
+            <td>Next Reset Your Time</td>
+            <td id="nextWeeklyResetLocalTimeAS">--</td>
+          </tr>
+          <tr>
+            <td>Countdown Till Next Reset</td>
+            <td id="countdownWeeklyResetAS">--</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="server-card" id="mira-reset-as" aria-label="Mira Crown Reset Clock Asia Server">
+      <h2>Mira Crown Reset Clock (AS)</h2>
+      <table class="time-table">
+        <tbody>
+          <tr>
+            <td>Next Reset Server Time</td>
+            <td id="nextMiraResetServerTimeAS">--</td>
+          </tr>
+          <tr>
+            <td>Next Reset Your Time</td>
+            <td id="nextMiraResetLocalTimeAS">--</td>
+          </tr>
+          <tr>
+            <td>Countdown Till Next Reset</td>
+            <td id="countdownMiraResetAS">--</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="server-card" id="eu-server" aria-label="Europe Server Time (UTC+2)">
+      <h2>Europe Server Time (UTC+2)</h2>
+      <table class="time-table">
+        <tbody>
+          <tr>
+            <td>Server Time Now</td>
+            <td id="euServerTime">--:--:--</td>
+          </tr>
+          <tr>
+            <td>Your Time Now</td>
+            <td id="localTimeEU">--:--:--</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="server-card" id="daily-reset-eu" aria-label="Daily Reset Clock Europe Server">
+      <h2>Daily Reset Clock (EU)</h2>
+      <table class="time-table">
+        <tbody>
+          <tr>
+            <td>Next Reset Server Time</td>
+            <td id="nextResetServerTimeEU">--</td>
+          </tr>
+          <tr>
+            <td>Next Reset Your Time</td>
+            <td id="nextResetLocalTimeEU">--</td>
+          </tr>
+          <tr>
+            <td>Countdown Till Next Reset</td>
+            <td id="countdownResetEU">--</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="server-card" id="daily-soiree-eu" aria-label="Daily Soiree Clock Europe Server">
+      <h2>Daily Soiree Clock (EU)</h2>
+      <table class="time-table">
+        <tbody>
+          <tr>
+            <td>Next Soiree Starts At<br>Server Time</td>
+            <td id="nextSoireeServerTimeEU">--</td>
+          </tr>
+          <tr>
+            <td>Next Soiree Starts At<br>Your Time</td>
+            <td id="nextSoireeLocalTimeEU">--</td>
+          </tr>
+          <tr>
+            <td><span id="soireeCountdownLabelEU">Countdown Till Next Soiree</span></td>
+            <td id="countdownSoireeEU">--</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="server-card" id="weekly-reset-eu" aria-label="Weekly Reset Clock Europe Server">
+      <h2>Weekly Reset Clock (EU)</h2>
+      <table class="time-table">
+        <tbody>
+          <tr>
+            <td>Next Reset Server Time</td>
+            <td id="nextWeeklyResetServerTimeEU">--</td>
+          </tr>
+          <tr>
+            <td>Next Reset Your Time</td>
+            <td id="nextWeeklyResetLocalTimeEU">--</td>
+          </tr>
+          <tr>
+            <td>Countdown Till Next Reset</td>
+            <td id="countdownWeeklyResetEU">--</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="server-card" id="mira-reset-eu" aria-label="Mira Crown Reset Clock Europe Server">
+      <h2>Mira Crown Reset Clock (EU)</h2>
+      <table class="time-table">
+        <tbody>
+          <tr>
+            <td>Next Reset Server Time</td>
+            <td id="nextMiraResetServerTimeEU">--</td>
+          </tr>
+          <tr>
+            <td>Next Reset Your Time</td>
+            <td id="nextMiraResetLocalTimeEU">--</td>
+          </tr>
+          <tr>
+            <td>Countdown Till Next Reset</td>
+            <td id="countdownMiraResetEU">--</td>
+          </tr>
+        </tbody>
+
+      </table>
+    </section>
+
+    <section class="server-card" id="na-server" aria-label="North America Server Time (UTC-7)">
+      <h2>North America Server Time (UTC-7)</h2>
+      <table class="time-table">
+        <tbody>
+          <tr>
+            <td>Server Time Now</td>
+            <td id="naServerTime">--:--:--</td>
+          </tr>
+          <tr>
+            <td>Your Time Now</td>
+            <td id="localTimeNA">--:--:--</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="server-card" id="daily-reset-na" aria-label="Daily Reset Clock North America Server">
+      <h2>Daily Reset Clock (NA)</h2>
+      <table class="time-table">
+        <tbody>
+          <tr>
+            <td>Next Reset Server Time</td>
+            <td id="nextResetServerTimeNA">--</td>
+          </tr>
+          <tr>
+            <td>Next Reset Your Time</td>
+            <td id="nextResetLocalTimeNA">--</td>
+          </tr>
+          <tr>
+            <td>Countdown Till Next Reset</td>
+            <td id="countdownResetNA">--</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="server-card" id="daily-soiree-na" aria-label="Daily Soiree Clock North America Server">
+      <h2>Daily Soiree Clock (NA)</h2>
+      <table class="time-table">
+        <tbody>
+          <tr>
+            <td>Next Soiree Starts At<br>Server Time</td>
+            <td id="nextSoireeServerTimeNA">--</td>
+          </tr>
+          <tr>
+            <td>Next Soiree Starts At<br>Your Time</td>
+            <td id="nextSoireeLocalTimeNA">--</td>
+          </tr>
+          <tr>
+            <td><span id="soireeCountdownLabelNA">Countdown Till Next Soiree</span></td>
+            <td id="countdownSoireeNA">--</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="server-card" id="weekly-reset-na" aria-label="Weekly Reset Clock North America Server">
+      <h2>Weekly Reset Clock (NA)</h2>
+      <table class="time-table">
+        <tbody>
+          <tr>
+            <td>Next Reset Server Time</td>
+            <td id="nextWeeklyResetServerTimeNA">--</td>
+          </tr>
+          <tr>
+            <td>Next Reset Your Time</td>
+            <td id="nextWeeklyResetLocalTimeNA">--</td>
+          </tr>
+          <tr>
+            <td>Countdown Till Next Reset</td>
+            <td id="countdownWeeklyResetNA">--</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="server-card" id="mira-reset-na" aria-label="Mira Crown Reset Clock North America Server">
+      <h2>Mira Crown Reset Clock (NA)</h2>
+      <table class="time-table">
+        <tbody>
+          <tr>
+            <td>Next Reset Server Time</td>
+            <td id="nextMiraResetServerTimeNA">--</td>
+          </tr>
+          <tr>
+            <td>Next Reset Your Time</td>
+            <td id="nextMiraResetLocalTimeNA">--</td>
+          </tr>
+          <tr>
+            <td>Countdown Till Next Reset</td>
+            <td id="countdownMiraResetNA">--</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer>
+    Powered by <a href="https://www.tumblr.com" target="_blank" rel="noopener noreferrer">Tumblr</a>. Designed by <a href="https://www.tumblr.com/rewvyu" target="_blank" rel="noopener noreferrer">Rewvyu</a>.
+  </footer>
+
+  <script>
+    /*
+    Infinity Nikki Clocks & Timezone Converter
+    Made by Rewvyu
+    https://www.tumblr.com/rewvyu
+    */
+    const pad = n => n.toString().padStart(2, '0');
+
+    // New helper function for MM/DD/YYYY format
+    const formatDateMMDDYYYY = date =>
+      `${pad(date.getMonth() + 1)}/${pad(date.getDate())}/${date.getFullYear()}`;
+
+    const formatDateTime = date =>
+      `${formatDateMMDDYYYY(date)} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+
+    const formatDateYYYYMMDD = date =>
+      `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+
+    const formatDateTimeInTargetTz = (utcTimestamp, targetOffsetMinutes) => {
+      const targetDate = new Date(utcTimestamp + targetOffsetMinutes * 60 * 1000);
+      const year = targetDate.getUTCFullYear();
+      const month = pad(targetDate.getUTCMonth() + 1);
+      const day = pad(targetDate.getUTCDate());
+      const hours = pad(targetDate.getUTCHours());
+      const minutes = pad(targetDate.getUTCMinutes());
+      const seconds = pad(targetDate.getUTCSeconds());
+      // Use formatDateMMDDYYYY for the date part
+      return `${pad(month)}/${pad(day)}/${year} ${hours}:${minutes}:${seconds}`;
+    };
+
+    const formatCountdown = (diffMs) => {
+      let diff = Math.max(diffMs, 0);
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      diff -= days * 1000 * 60 * 60 * 24;
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      diff -= hours * 1000 * 60 * 60;
+      const minutes = Math.floor(diff / (1000 * 60));
+      diff -= minutes * 1000 * 60;
+      const seconds = Math.floor(diff / 1000);
+
+      let countdownStr = '';
+      if (days > 0) {
+        countdownStr += `${days}d `;
+      }
+      countdownStr += `${hours}h ${minutes}m ${seconds}s`;
+      return countdownStr;
+    };
+
+    const buttons = {
+      all: document.getElementById("btnAll"),
+      as: document.getElementById("btnAsia"),
+      eu: document.getElementById("btnEU"),
+      na: document.getElementById("btnNA"),
+      themeToggle: document.getElementById("btnThemeToggle"),
+    };
+
+    const cardGroups = {
+      AS: [
+        "asia-server",
+        "daily-reset-as",
+        "daily-soiree-as",
+        "weekly-reset-as",
+        "mira-reset-as"
+      ],
+      EU: [
+        "eu-server",
+        "daily-reset-eu",
+        "daily-soiree-eu",
+        "weekly-reset-eu",
+        "mira-reset-eu"
+      ],
+      NA: [
+        "na-server",
+        "daily-reset-na",
+        "daily-soiree-na",
+        "weekly-reset-na",
+        "mira-reset-na"
+      ],
+    };
+
+    function showCards(groupsToShow) {
+      const allIds = [...cardGroups.AS, ...cardGroups.EU, ...cardGroups.NA,
+                       "timezone-converter"];
+      allIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.style.display = groupsToShow.includes(id) ? "flex" : "none";
+        }
+      });
+    }
+
+    function saveActiveNav(buttonId) {
+        localStorage.setItem('activeNavButton', buttonId);
+    }
+
+    function loadActiveNav() {
+        return localStorage.getItem('activeNavButton') || 'btnAll';
+    }
+
+    function activateButton(activeBtnId) {
+      Object.values(buttons).forEach(btn => {
+        if (btn.id !== 'btnThemeToggle') {
+          btn.classList.remove("active");
+        }
+      });
+      const activeBtn = document.getElementById(activeBtnId);
+      if (activeBtn) {
+        activeBtn.classList.add("active");
+      }
+    }
+
+    buttons.all.addEventListener("click", () => {
+      showCards([...cardGroups.AS, ...cardGroups.EU, ...cardGroups.NA, "timezone-converter"]);
+      activateButton(buttons.all.id);
+      saveActiveNav(buttons.all.id);
+    });
+
+    buttons.as.addEventListener("click", () => {
+      showCards([...cardGroups.AS, "timezone-converter"]);
+      activateButton(buttons.as.id);
+      saveActiveNav(buttons.as.id);
+    });
+
+    buttons.eu.addEventListener("click", () => {
+      showCards([...cardGroups.EU, "timezone-converter"]);
+      activateButton(buttons.eu.id);
+      saveActiveNav(buttons.eu.id);
+    });
+
+    buttons.na.addEventListener("click", () => {
+      showCards([...cardGroups.NA, "timezone-converter"]);
+      activateButton(buttons.na.id);
+      saveActiveNav(buttons.na.id);
+    });
+
+    function saveThemePreference(theme) {
+        localStorage.setItem('theme', theme);
+    }
+
+    function loadThemePreference() {
+        return localStorage.getItem('theme') || 'light';
+    }
+
+    function updateThemeToggleText() {
+        const isDarkMode = document.body.classList.contains('dark');
+        buttons.themeToggle.textContent = isDarkMode ? '🌞' : '🌛';
+    }
+
+    buttons.themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+      const currentTheme = document.body.classList.contains('dark') ? 'dark' : 'light';
+      saveThemePreference(currentTheme);
+      updateThemeToggleText();
+    });
+
+    function updateServerTime(serverPrefix, utcOffsetHours) {
+      const serverTimeEl = document.getElementById(`${serverPrefix.toLowerCase()}ServerTime`);
+      const localTimeEl = document.getElementById(`localTime${serverPrefix}`);
+
+      const now = new Date();
+      const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+      const serverOffsetMs = utcOffsetHours * 60 * 60000;
+      const serverDate = new Date(utc + serverOffsetMs);
+
+      if (serverTimeEl) serverTimeEl.textContent = serverDate.toTimeString().slice(0, 8);
+      if (localTimeEl) localTimeEl.textContent = now.toTimeString().slice(0, 8);
+    }
+
+    function updateDailyReset(serverPrefix, utcOffsetHours) {
+      const serverTimeEl = document.getElementById(`nextResetServerTime${serverPrefix}`);
+      const localTimeEl = document.getElementById(`nextResetLocalTime${serverPrefix}`);
+      const countdownEl = document.getElementById(`countdownReset${serverPrefix}`);
+
+      const now = new Date();
+      const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+      const offsetMs = utcOffsetHours * 60 * 60000;
+
+      const nowServer = new Date(utc + offsetMs);
+
+      let resetServer = new Date(nowServer);
+      resetServer.setUTCHours(4, 0, 0, 0);
+
+      if (nowServer >= resetServer) {
+        resetServer.setUTCDate(resetServer.getUTCDate() + 1);
+      }
+
+      const resetUTCms = resetServer.getTime();
+      const resetLocal = new Date(resetUTCms - offsetMs + now.getTimezoneOffset() * 60000 * -1);
+
+      if (serverTimeEl) serverTimeEl.textContent = `${formatDateTime(resetServer)} (UTC${utcOffsetHours >= 0 ? '+' : ''}${utcOffsetHours})`;
+      if (localTimeEl) localTimeEl.textContent = `${formatDateTime(resetLocal)} (${Intl.DateTimeFormat().resolvedOptions().timeZone})`;
+      if (countdownEl) countdownEl.textContent = formatCountdown(resetServer.getTime() - nowServer.getTime());
+    }
+
+    function updateWeeklyReset(serverPrefix, utcOffsetHours) {
+      const serverTimeEl = document.getElementById(`nextWeeklyResetServerTime${serverPrefix}`);
+      const localTimeEl = document.getElementById(`nextWeeklyResetLocalTime${serverPrefix}`);
+      const countdownEl = document.getElementById(`countdownWeeklyReset${serverPrefix}`);
+
+      const now = new Date();
+      const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+      const offsetMs = utcOffsetHours * 60 * 60000;
+
+      const nowServer = new Date(utc + offsetMs);
+
+      let resetServer = new Date(nowServer);
+      resetServer.setUTCHours(4, 0, 0, 0);
+
+      const targetDay = 1; // Monday
+      const currentDay = nowServer.getUTCDay();
+
+      let daysUntilReset = (targetDay - currentDay + 7) % 7;
+      if (daysUntilReset === 0 && nowServer.getUTCHours() >= 4) {
+        daysUntilReset = 7;
+      }
+
+      resetServer.setUTCDate(resetServer.getUTCDate() + daysUntilReset);
+
+      const resetUTCms = resetServer.getTime();
+      const resetLocal = new Date(resetUTCms - offsetMs + now.getTimezoneOffset() * 60000 * -1);
+
+      // Using the new formatDateMMDDYYYY for consistency
+      if (serverTimeEl) serverTimeEl.textContent = `${formatDateMMDDYYYY(resetServer)} ${pad(resetServer.getUTCHours())}:${pad(resetServer.getUTCMinutes())}:${pad(resetServer.getUTCSeconds())} (UTC${utcOffsetHours >= 0 ? '+' : ''}${utcOffsetHours})`;
+      if (localTimeEl) localTimeEl.textContent = `${formatDateTime(resetLocal)} (${Intl.DateTimeFormat().resolvedOptions().timeZone})`;
+      if (countdownEl) countdownEl.textContent = formatCountdown(resetServer.getTime() - nowServer.getTime());
+    }
+
+
+    function updateMiraReset(serverPrefix, utcOffsetHours) {
+      const serverTimeEl = document.getElementById(`nextMiraResetServerTime${serverPrefix}`);
+      const localTimeEl = document.getElementById(`nextMiraResetLocalTime${serverPrefix}`);
+      const countdownEl = document.getElementById(`countdownMiraReset${serverPrefix}`);
+
+      const now = new Date();
+      const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+      const offsetMs = utcOffsetHours * 60 * 60000;
+      const nowServer = new Date(utc + offsetMs);
+
+      let resetServer = new Date(Date.UTC(nowServer.getUTCFullYear(), nowServer.getUTCMonth(), nowServer.getUTCDate(), 4, 0, 0, 0));
+
+      const day = nowServer.getUTCDate();
+      
+      if (day >= 16) {
+          resetServer.setUTCMonth(resetServer.getUTCMonth() + 1, 1);
+      } else {
+          resetServer.setUTCDate(16);
+      }
+
+      const resetUTCms = resetServer.getTime();
+      const resetLocal = new Date(resetUTCms - offsetMs + now.getTimezoneOffset() * 60000 * -1);
+
+      if (serverTimeEl) serverTimeEl.textContent = `${formatDateTime(new Date(resetUTCms))} (UTC${utcOffsetHours >= 0 ? '+' : ''}${utcOffsetHours})`;
+      if (localTimeEl) localTimeEl.textContent = `${formatDateTime(resetLocal)} (${Intl.DateTimeFormat().resolvedOptions().timeZone})`;
+      if (countdownEl) countdownEl.textContent = formatCountdown(resetUTCms - nowServer.getTime());
+    }
+
+    function updateDailySoiree(serverPrefix, utcOffsetHours) {
+      const serverTimeEl = document.getElementById(`nextSoireeServerTime${serverPrefix}`);
+      const localTimeEl = document.getElementById(`nextSoireeLocalTime${serverPrefix}`);
+      const countdownLabelEl = document.getElementById(`soireeCountdownLabel${serverPrefix}`);
+      const countdownEl = document.getElementById(`countdownSoiree${serverPrefix}`);
+
+      const now = new Date();
+      const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+      const offsetMs = utcOffsetHours * 60 * 60000;
+      const nowServer = new Date(utc + offsetMs);
+
+      let soireeStartServer = new Date(nowServer);
+      soireeStartServer.setUTCHours(20, 0, 0, 0);
+
+      let soireeEndServer = new Date(nowServer);
+      soireeEndServer.setUTCHours(22, 0, 0, 0);
+
+      let displayServerTime;
+      let countdownTargetMs;
+      let countdownLabelText;
+
+      if (nowServer >= soireeStartServer && nowServer < soireeEndServer) {
+        countdownTargetMs = soireeEndServer.getTime();
+        countdownLabelText = "Countdown Till Current Soiree End";
+        displayServerTime = soireeStartServer;
+      } else {
+        if (nowServer >= soireeEndServer) {
+          soireeStartServer.setUTCDate(soireeStartServer.getUTCDate() + 1);
+        }
+        countdownTargetMs = soireeStartServer.getTime();
+        countdownLabelText = "Countdown Till Next Soiree";
+        displayServerTime = soireeStartServer;
+      }
+
+      const displayUTCms = displayServerTime.getTime();
+      const displayLocal = new Date(displayUTCms - offsetMs + now.getTimezoneOffset() * 60000 * -1);
+
+      if (serverTimeEl) serverTimeEl.textContent = `${formatDateTime(new Date(displayUTCms))} (UTC${utcOffsetHours >= 0 ? '+' : ''}${utcOffsetHours})`;
+      if (localTimeEl) localTimeEl.textContent = `${formatDateTime(displayLocal)} (${Intl.DateTimeFormat().resolvedOptions().timeZone})`;
+      if (countdownLabelEl) countdownLabelEl.textContent = countdownLabelText;
+      if (countdownEl) countdownEl.textContent = formatCountdown(countdownTargetMs - nowServer.getTime());
+    }
+
+
+    const initializeClocks = () => {
+      updateServerTime('Asia', 8);
+      updateDailyReset('AS', 8);
+      updateWeeklyReset('AS', 8);
+      updateMiraReset('AS', 8);
+      updateDailySoiree('AS', 8);
+
+      updateServerTime('EU', 2);
+      updateDailyReset('EU', 2);
+      updateWeeklyReset('EU', 2);
+      updateMiraReset('EU', 2);
+      updateDailySoiree('EU', 2);
+
+      updateServerTime('NA', -7);
+      updateDailyReset('NA', -7);
+      updateWeeklyReset('NA', -7);
+      updateMiraReset('NA', -7);
+      updateDailySoiree('NA', -7);
+    };
+
+    const utcTimezones = [
+      { offset: -12, label: "UTC-12 — Baker Island" },
+      { offset: -11, label: "UTC-11 — Pago Pago, Niue, American Samoa" },
+      { offset: -10, label: "UTC-10 — Honolulu, Papeete, Rarotonga" },
+      { offset: -9,  label: "UTC-9 — Anchorage, Juneau, Yakutat" },
+      { offset: -8,  label: "UTC-8 — Los Angeles, Vancouver, Tijuana" },
+      { offset: -7,  label: "UTC-7 — Denver, Edmonton, Chihuahua" },
+      { offset: -6,  label: "UTC-6 — Chicago, Mexico City, Guatemala City" },
+      { offset: -5,  label: "UTC-5 — New York, Toronto, Lima" },
+      { offset: -4,  label: "UTC-4 — Santiago, Caracas, La Paz" },
+      { offset: -3,  label: "UTC-3 — Buenos Aires, São Paulo, Montevideo" },
+      { offset: -2,  label: "UTC-2 — South Georgia, Azores" },
+      { offset: -1,  label: "UTC-1 — Cape Verde, Azores" },
+      { offset: 0,   label: "UTC+0 — London, Lisbon, Casablanca" },
+      { offset: 1,   label: "UTC+1 — Berlin, Paris, Rome" },
+      { offset: 2,   label: "UTC+2 — Athens, Cairo, Johannesburg" },
+      { offset: 3,   label: "UTC+3 — Moscow, Istanbul, Nairobi" },
+      { offset: 4,   label: "UTC+4 — Dubai, Baku, Samara" },
+      { offset: 5,   label: "UTC+5 — Karachi, Tashkent, Yekaterinburg" },
+      { offset: 5.5, label: "UTC+5:30 — Mumbai, Delhi, Colombo" },
+      { offset: 6,   label: "UTC+6 — Dhaka, Almaty, Omsk" },
+      { offset: 7,   label: "UTC+7 — Bangkok, Jakarta, Hanoi" },
+      { offset: 8,   label: "UTC+8 — Singapore, Beijing, Manila" },
+      { offset: 9,   label: "UTC+9 — Tokyo, Seoul, Pyongyang" },
+      { offset: 9.5, label: "UTC+9:30 — Adelaide, Darwin" },
+      { offset: 10,  label: "UTC+10 — Sydney, Guam, Vladivostok" },
+      { offset: 11,  label: "UTC+11 — Magadan, Solomon Islands" },
+      { offset: 12,  label: "UTC+12 — Auckland, Fiji, Kamchatka" },
+      { offset: 13,  label: "UTC+13 — Nuku'alofa, Phoenix Islands" },
+      { offset: 14,  label: "UTC+14 — Kiritimati" }
+    ];
+
+    const fromTzSelect = document.getElementById('fromTz');
+    const toTzSelect = document.getElementById('toTz');
+    const dateInput = document.getElementById('dateInput');
+    const timeInput = document.getElementById('timeInput');
+    const resultDiv = document.getElementById('result');
+
+    function formatOffset(offset) {
+      if (offset % 1 !== 0) {
+        const hours = Math.floor(offset);
+        const minutes = (offset % 1) * 60;
+        const sign = offset >= 0 ? '+' : '-';
+        return `UTC${sign}${Math.abs(hours)}:${minutes === 30 ? '30' : '00'}`;
+      } else {
+        const sign = offset >= 0 ? '+' : '-';
+        return `UTC${sign}${Math.abs(offset)}`;
+      }
+    }
+
+    function populateDropdown(selectEl) {
+      utcTimezones.forEach(({ offset, label }) => {
+        const option = document.createElement('option');
+        option.value = formatOffset(offset);
+        option.textContent = label;
+        selectEl.appendChild(option);
+      });
+    }
+
+    populateDropdown(fromTzSelect);
+    populateDropdown(toTzSelect);
+
+    fromTzSelect.value = "UTC+8";
+    try {
+      const now = new Date();
+      const userOffsetMinutes = -now.getTimezoneOffset();
+      const userOffset = userOffsetMinutes / 60;
+      const closest = utcTimezones.reduce((prev, curr) =>
+        Math.abs(curr.offset - userOffset) < Math.abs(prev.offset - userOffset) ? curr : prev);
+      toTzSelect.value = formatOffset(closest.offset);
+    } catch {
+      toTzSelect.value = "UTC+0";
+    }
+
+    const now = new Date();
+    // Set default date to today in YYYY-MM-DD format for input type="date"
+    dateInput.value = now.toISOString().split('T')[0];
+    timeInput.value = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+
+    function validateTimeFormat(timeStr) {
+      return /^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/.test(timeStr);
+    }
+
+    // Removed validateDateFormat as input type="date" handles validation
+    // Removed dateInput event listener for formatting as input type="date" handles it
+
+    function parseUTCOffset(offsetStr) {
+        const match = offsetStr.match(/UTC([+-])(\d+)(?::(\d+))?/);
+        if (!match) throw new Error("Invalid UTC offset format");
+        const sign = match[1] === '+' ? 1 : -1;
+        const hours = parseInt(match[2], 10);
+        const minutes = match[3] ? parseInt(match[3], 10) : 0;
+        return sign * (hours * 60 + minutes);
+    }
+
+    function convertTime() {
+      const fromTz = fromTzSelect.value;
+      const toTz = toTzSelect.value;
+      const dateStr = dateInput.value; // Value is already in YYYY-MM-DD
+      const timeStr = timeInput.value;
+
+      if (!fromTz || !toTz || !dateStr || !timeStr) {
+        resultDiv.textContent = 'Conversion Result: --';
+        return;
+      }
+
+      // No need for validateDateFormat here, as input type="date" handles it
+      if (!validateTimeFormat(timeStr)) {
+        resultDiv.textContent = 'Conversion Result: Invalid time format. Use HH:mm:ss (24h)';
+        return;
+      }
+
+      try {
+        const [year, month, day] = dateStr.split('-').map(Number);
+        const [fromHours, fromMinutes, fromSeconds] = timeStr.split(':').map(Number);
+
+
+        const totalFromOffsetMinutes = parseUTCOffset(fromTz);
+        const totalToOffsetMinutes = parseUTCOffset(toTz);
+
+        // Construct Date object using UTC components to avoid local timezone issues
+        const inputDateInUTC = new Date(Date.UTC(year, month - 1, day, fromHours, fromMinutes, fromSeconds));
+        // Adjust to true UTC timestamp based on the 'from' timezone's offset
+        const trueUtcTimestamp = inputDateInUTC.getTime() - totalFromOffsetMinutes * 60 * 1000;
+
+        const toDate = new Date(trueUtcTimestamp);
+
+        resultDiv.textContent = `Conversion Result: ${formatDateTimeInTargetTz(toDate.getTime(), totalToOffsetMinutes)} (${toTz})`;
+      } catch (e) {
+        resultDiv.textContent = 'Conversion Result: Error during conversion';
+        console.error(e);
+      }
+    }
+
+    timeInput.addEventListener('input', (event) => {
+      const input = event.target;
+      let value = input.value.replace(/\D/g, '');
+      const oldLength = input.value.length;
+      const oldCursorPos = input.selectionStart;
+
+      if (value.length > 6) {
+        value = value.slice(0, 6);
+      }
+
+      let formattedValue = '';
+      if (value.length > 4) {
+        formattedValue = `${value.slice(0, 2)}:${value.slice(2, 4)}:${value.slice(4, 6)}`;
+      } else if (value.length > 2) {
+        formattedValue = `${value.slice(0, 2)}:${value.slice(2, 4)}`;
+      } else {
+        formattedValue = value;
+      }
+
+      input.value = formattedValue;
+
+      let newCursorPos = oldCursorPos;
+      const newLength = formattedValue.length;
+
+      if (oldLength < newLength) {
+          if (oldCursorPos === 2 && newLength >= 3 && formattedValue[2] === ':') {
+              newCursorPos++;
+          }
+          if (oldCursorPos === 5 && newLength >= 6 && formattedValue[5] === ':') {
+              newCursorPos++;
+          }
+      }
+
+      input.setSelectionRange(newCursorPos, newCursorPos);
+    });
+
+    // Removed dateInput.addEventListener('input', ...) as type="date" handles formatting
+
+    ['change', 'input'].forEach(evt => {
+      fromTzSelect.addEventListener(evt, convertTime);
+      toTzSelect.addEventListener(evt, convertTime);
+      dateInput.addEventListener(evt, convertTime);
+      timeInput.addEventListener(evt, convertTime);
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const savedTheme = loadThemePreference();
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark');
+        }
+        updateThemeToggleText();
+
+        const lastActiveNav = loadActiveNav();
+        let groupsToDisplay = [];
+        let buttonToActivate = buttons.all.id;
+
+        if (lastActiveNav === buttons.as.id) {
+            groupsToDisplay = [...cardGroups.AS, "timezone-converter"];
+            buttonToActivate = buttons.as.id;
+        } else if (lastActiveNav === buttons.eu.id) {
+            groupsToDisplay = [...cardGroups.EU, "timezone-converter"];
+            buttonToActivate = buttons.eu.id;
+        } else if (lastActiveNav === buttons.na.id) {
+            groupsToDisplay = [...cardGroups.NA, "timezone-converter"];
+            buttonToActivate = buttons.na.id;
+        } else {
+            groupsToDisplay = [...cardGroups.AS, ...cardGroups.EU, ...cardGroups.NA, "timezone-converter"];
+            buttonToActivate = buttons.all.id;
+        }
+
+        showCards(groupsToDisplay);
+        activateButton(buttonToActivate);
+
+        setInterval(initializeClocks, 1000);
+        initializeClocks();
+        convertTime();
+    });
+  </script>
+</body>
+</html>
