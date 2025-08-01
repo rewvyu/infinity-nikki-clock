@@ -500,6 +500,18 @@
     */
     const pad = n => n.toString().padStart(2, '0');
 
+    // Changed to function declaration for hoisting robustness
+    function formatDateTimeInTargetTz(utcTimestamp, targetOffsetMinutes) {
+      const targetDate = new Date(utcTimestamp + targetOffsetMinutes * 60 * 1000);
+      const year = targetDate.getUTCFullYear();
+      const month = pad(targetDate.getUTCMonth() + 1);
+      const day = pad(targetDate.getUTCDate());
+      const hours = pad(targetDate.getUTCHours());
+      const minutes = pad(targetDate.getUTCMinutes());
+      const seconds = pad(targetDate.getUTCSeconds());
+      return `${pad(month)}/${pad(day)}/${year} ${hours}:${minutes}:${seconds}`;
+    }
+
     const formatCountdown = (diffMs) => {
       let diff = Math.max(diffMs, 0);
 
@@ -842,7 +854,7 @@
       const closest = utcTimezones.reduce((prev, curr) =>
         Math.abs(curr.offset - userOffset) < Math.abs(prev.offset - userOffset) ? curr : prev);
       toTzSelect.value = formatOffset(closest.offset);
-    } catch {
+    } catch (e) {
       toTzSelect.value = "UTC+0";
     }
 
