@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after {
+    * {
         box-sizing: border-box;
     }
 
@@ -26,7 +26,7 @@
     }
 
     .title-container {
-        margin: 0 auto 25px auto; /* Adjusted margin-bottom for spacing below title and above buttons */
+        margin: 0 auto 25px auto;
         padding: 1.5rem 2rem;
         border-radius: 20px;
         background: #FFFFFF;
@@ -51,25 +51,24 @@
         letter-spacing: 0.03em;
     }
 
-    /* New navigation button styles */
     .top-navigation-buttons {
         display: flex;
         justify-content: center;
-        gap: 10px; /* Space between buttons */
-        margin: 0 auto 25px auto; /* Centered the container and added margin-bottom */
+        gap: 10px;
+        margin: 0 auto 25px auto;
         width: 100%;
-        max-width: 700px; /* Align with container width */
-        flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+        max-width: 700px;
+        flex-wrap: wrap;
     }
 
     .top-navigation-buttons a {
         display: inline-block;
-        padding: 8px 15px; /* Smaller padding */
-        background-color: #E6A4B4; /* Solid color matching the main accent */
+        padding: 8px 15px;
+        background-color: #E6A4B4;
         color: white;
         text-decoration: none;
         border-radius: 15px;
-        font-size: 0.95em; /* Smaller font size */
+        font-size: 0.95em;
         font-weight: bold;
         font-family: 'Nunito', sans-serif;
         cursor: pointer;
@@ -77,8 +76,8 @@
         box-shadow: 0 4px 10px rgba(230, 164, 180, 0.3);
         text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         text-align: center;
-        flex-grow: 1; /* Allow buttons to grow and fill space */
-        max-width: 250px; /* Limit individual button width */
+        flex-grow: 1;
+        max-width: 250px;
     }
 
     .top-navigation-buttons a:hover {
@@ -91,20 +90,19 @@
         box-shadow: 0 4px 10px rgba(230, 164, 180, 0.3);
     }
 
-
     main {
         display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
+        flex-direction: column;
+        align-items: center;
         gap: 1.5rem;
-        align-items: stretch;
         margin: 0 auto 1.5rem auto;
         max-width: 900px;
     }
 
     #timezone-converter,
     .server-card {
-        width: 300px; /* Set a fixed width for uniformity */
+        width: 100%;
+        max-width: 500px;
         padding: 20px;
         border: 1px solid #F8E0E6;
         border-radius: 15px;
@@ -154,81 +152,80 @@
         border-top: 1px solid #F8E0E6;
     }
 
-    /* Dark Pastel Theme */
-    body.dark {
+    .dark {
         background-color: #4c3b4d;
         color: #F8E0E6;
         background-image: radial-gradient(#6c5b7b 1px, transparent 1px);
     }
-    body.dark .title-container {
+    .dark .title-container {
         background: #3a2e3a;
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
     }
-    body.dark .title-container h1 {
+    .dark .title-container h1 {
         color: #E6A4B4;
     }
-    body.dark .title-container h1 span {
+    .dark .title-container h1 span {
         color: #b48ead;
     }
-    body.dark .top-navigation-buttons a {
-        background-color: #b48ead; /* Dark mode button color */
+    .dark .top-navigation-buttons a {
+        background-color: #b48ead;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     }
-    body.dark .top-navigation-buttons a:hover {
+    .dark .top-navigation-buttons a:hover {
         box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
     }
-    body.dark .top-navigation-buttons a:active {
+    .dark .top-navigation-buttons a:active {
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     }
-    body.dark #timezone-converter,
-    body.dark .server-card {
+    .dark #timezone-converter,
+    .dark .server-card {
         background: #6c5b7b;
         border-color: #8c7b9b;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         color: #F8E0E6;
     }
-    body.dark #timezone-converter h2,
-    body.dark .server-card h2 {
+    .dark #timezone-converter h2,
+    .dark .server-card h2 {
         color: #F2C4D2;
         border-bottom-color: #8c7b9b;
     }
-    body.dark select, body.dark input {
+    .dark select, .dark input {
         background-color: #4c3b4d;
         border-color: #8c7b9b;
         color: #F8E0E6;
     }
-    body.dark select:focus, body.dark input:focus {
+    .dark select:focus, .dark input:focus {
         border-color: #E6A4B4;
         background-color: #3a2e3a;
         box-shadow: 0 0 0 3px rgba(230, 164, 180, 0.3);
         color: #fff;
     }
-    body.dark .time-table tr + tr td {
+    .dark .time-table tr + tr td {
       border-top-color: #8c7b9b;
     }
-    body.dark nav.button-group {
+    .dark nav.button-group {
         background: #3a2e3a;
         border-color: #8c7b9b;
         box-shadow: 0 0 15px rgba(0,0,0,0.2);
     }
-    body.dark nav.button-group button {
+    .dark nav.button-group button {
         color: #F8E0E6;
         border-right-color: #8c7b9b;
     }
-    body.dark nav.button-group button:hover,
-    body.dark nav.button-group button:focus {
+    .dark nav.button-group button:hover,
+    .dark nav.button-group button:focus {
         background-color: #4c3b4d;
         color: #fff;
     }
-    body.dark nav.button-group button.active {
+    .dark nav.button-group button.active {
         background-color: #E6A4B4;
         color: #4c3b4d;
         box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
     }
-    body.dark footer {
+    .dark footer {
         color: #b48ead;
     }
-    body.dark footer a {
+    .dark footer a {
         color: #F2C4D2;
     }
 
@@ -294,7 +291,7 @@
 
     #timezone-converter select,
     #timezone-converter input[type="text"],
-    #timezone-converter input[type="date"] { /* Added type="date" here */
+    #timezone-converter input[type="date"] {
         width: 100%;
         padding: 10px;
         border: 1px solid #F8E0E6;
@@ -309,7 +306,7 @@
     
     #timezone-converter select:focus,
     #timezone-converter input[type="text"]:focus,
-    #timezone-converter input[type="date"]:focus { /* Added type="date" here */
+    #timezone-converter input[type="date"]:focus {
         border-color: #E6A4B4;
         box-shadow: 0 0 0 3px rgba(230, 164, 180, 0.3);
     }
@@ -320,7 +317,7 @@
       font-weight: 700;
       color: #E6A4B4;
     }
-    body.dark #result {
+    .dark #result {
       color: #F2C4D2;
     }
 
@@ -345,7 +342,6 @@
     @media (max-width: 768px) {
       body { margin: 0; padding: 1rem 1rem 6rem 1rem; }
       .title-container { padding: 1rem 1.2rem; margin-bottom: 1rem; }
-      /* Responsive adjustments for top navigation buttons */
       .top-navigation-buttons {
           flex-direction: column;
           gap: 8px;
@@ -371,7 +367,7 @@
         margin-bottom: 0;
         box-shadow: 0 -4px 15px rgba(230, 164, 180, 0.15);
       }
-      body.dark nav.button-group {
+      .dark nav.button-group {
         box-shadow: 0 -4px 15px rgba(0,0,0,0.2);
       }
       nav.button-group button { flex-grow: 1; padding: 1rem 0.5rem; font-size: 0.9rem; }
@@ -395,8 +391,9 @@
   <nav class="button-group" aria-label="Primary navigation">
     <button id="btnAll" type="button" title="Show All Clocks" aria-label="Show all clocks">ALL</button>
     <button id="btnAsia" type="button" title="Show Asia Server Clocks" aria-label="Show Asia server clocks">AS</button>
-    <button id="btnEU" type="button" title="Show Europe Server Clocks" aria-label="Show Europe server clocks">EU</button>
+    <button id="btnEurope" type="button" title="Show Europe Server Clocks" aria-label="Show Europe server clocks">EU</button>
     <button id="btnNA" type="button" title="Show North America Server Clocks" aria-label="Show North America server clocks">NA</button>
+    <button id="btnTC" type="button" title="Show Timezone Converter" aria-label="Show Timezone Converter">TC</button>
     <button id="btnThemeToggle" type="button" title="Toggle Dark/Light Mode" aria-label="Toggle Dark or Light Mode">Theme</button>
   </nav>
 
@@ -442,181 +439,36 @@
             <td>Your Time Now</td>
             <td id="localTimeAsia">--:--:--</td>
           </tr>
-        </tbody>
-      </table>
-    </section>
-    <section class="server-card" id="daily-reset-as" aria-label="Daily Reset Clock Asia Server">
-      <h2>Daily Reset Clock (AS)</h2>
-      <table class="time-table">
-        <tbody>
           <tr>
-            <td>Next Reset Server Time</td>
-            <td id="nextResetServerTimeAS">--</td>
-          </tr>
-          <tr>
-            <td>Next Reset Your Time</td>
-            <td id="nextResetLocalTimeAS">--</td>
-          </tr>
-          <tr>
-            <td>Countdown Till Next Reset</td>
-            <td id="countdownResetAS">--</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-    <section class="server-card" id="daily-soiree-as" aria-label="Daily Soiree Clock Asia Server">
-      <h2>Daily Soiree Clock (AS)</h2>
-      <table class="time-table">
-        <tbody>
-          <tr>
-            <td>Next Soiree Starts At<br>Server Time</td>
-            <td id="nextSoireeServerTimeAS">--</td>
-          </tr>
-          <tr>
-            <td>Next Soiree Starts At<br>Your Time</td>
-            <td id="nextSoireeLocalTimeAS">--</td>
-          </tr>
-          <tr>
-            <td><span id="soireeCountdownLabelAS">Countdown Till Next Soiree</span></td>
-            <td id="countdownSoireeAS">--</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-    <section class="server-card" id="weekly-reset-as" aria-label="Weekly Reset Clock Asia Server">
-      <h2>Weekly Reset Clock (AS)</h2>
-      <table class="time-table">
-        <tbody>
-          <tr>
-            <td>Next Reset Server Time</td>
-            <td id="nextWeeklyResetServerTimeAS">--</td>
-          </tr>
-          <tr>
-            <td>Next Reset Your Time</td>
-            <td id="nextWeeklyResetLocalTimeAS">--</td>
-          </tr>
-          <tr>
-            <td>Countdown Till Next Reset</td>
-            <td id="countdownWeeklyResetAS">--</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-    <section class="server-card" id="mira-reset-as" aria-label="Mira Crown Reset Clock Asia Server">
-      <h2>Mira Crown Reset Clock (AS)</h2>
-      <table class="time-table">
-        <tbody>
-          <tr>
-            <td>Next Reset Server Time</td>
-            <td id="nextMiraResetServerTimeAS">--</td>
-          </tr>
-          <tr>
-            <td>Next Reset Your Time</td>
-            <td id="nextMiraResetLocalTimeAS">--</td>
-          </tr>
-          <tr>
-            <td>Countdown Till Next Reset</td>
-            <td id="countdownMiraResetAS">--</td>
+            <td>Daily Reset Countdown</td>
+            <td id="countdownDailyResetAS">--</td>
           </tr>
         </tbody>
       </table>
     </section>
 
-    <section class="server-card" id="eu-server" aria-label="Europe Server Time (UTC+2)">
-      <h2>Europe Server Time (UTC+2)</h2>
+    <section class="server-card" id="europe-server" aria-label="Europe Server Time (UTC+2)">
+      <h2>EU Server Time (UTC+2)</h2>
       <table class="time-table">
         <tbody>
           <tr>
             <td>Server Time Now</td>
-            <td id="euServerTime">--:--:--</td>
+            <td id="europeServerTime">--:--:--</td>
           </tr>
           <tr>
             <td>Your Time Now</td>
-            <td id="localTimeEU">--:--:--</td>
+            <td id="localTimeEurope">--:--:--</td>
+          </tr>
+          <tr>
+            <td>Daily Reset Countdown</td>
+            <td id="countdownDailyResetEU">--</td>
           </tr>
         </tbody>
-      </table>
-    </section>
-    <section class="server-card" id="daily-reset-eu" aria-label="Daily Reset Clock Europe Server">
-      <h2>Daily Reset Clock (EU)</h2>
-      <table class="time-table">
-        <tbody>
-          <tr>
-            <td>Next Reset Server Time</td>
-            <td id="nextResetServerTimeEU">--</td>
-          </tr>
-          <tr>
-            <td>Next Reset Your Time</td>
-            <td id="nextResetLocalTimeEU">--</td>
-          </tr>
-          <tr>
-            <td>Countdown Till Next Reset</td>
-            <td id="countdownResetEU">--</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-    <section class="server-card" id="daily-soiree-eu" aria-label="Daily Soiree Clock Europe Server">
-      <h2>Daily Soiree Clock (EU)</h2>
-      <table class="time-table">
-        <tbody>
-          <tr>
-            <td>Next Soiree Starts At<br>Server Time</td>
-            <td id="nextSoireeServerTimeEU">--</td>
-          </tr>
-          <tr>
-            <td>Next Soiree Starts At<br>Your Time</td>
-            <td id="nextSoireeLocalTimeEU">--</td>
-          </tr>
-          <tr>
-            <td><span id="soireeCountdownLabelEU">Countdown Till Next Soiree</span></td>
-            <td id="countdownSoireeEU">--</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-    <section class="server-card" id="weekly-reset-eu" aria-label="Weekly Reset Clock Europe Server">
-      <h2>Weekly Reset Clock (EU)</h2>
-      <table class="time-table">
-        <tbody>
-          <tr>
-            <td>Next Reset Server Time</td>
-            <td id="nextWeeklyResetServerTimeEU">--</td>
-          </tr>
-          <tr>
-            <td>Next Reset Your Time</td>
-            <td id="nextWeeklyResetLocalTimeEU">--</td>
-          </tr>
-          <tr>
-            <td>Countdown Till Next Reset</td>
-            <td id="countdownWeeklyResetEU">--</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-    <section class="server-card" id="mira-reset-eu" aria-label="Mira Crown Reset Clock Europe Server">
-      <h2>Mira Crown Reset Clock (EU)</h2>
-      <table class="time-table">
-        <tbody>
-          <tr>
-            <td>Next Reset Server Time</td>
-            <td id="nextMiraResetServerTimeEU">--</td>
-          </tr>
-          <tr>
-            <td>Next Reset Your Time</td>
-            <td id="nextMiraResetLocalTimeEU">--</td>
-          </tr>
-          <tr>
-            <td>Countdown Till Next Reset</td>
-            <td id="countdownMiraResetEU">--</td>
-          </tr>
-        </tbody>
-
       </table>
     </section>
 
     <section class="server-card" id="na-server" aria-label="North America Server Time (UTC-7)">
-      <h2>North America Server Time (UTC-7)</h2>
+      <h2>NA Server Time (UTC-7)</h2>
       <table class="time-table">
         <tbody>
           <tr>
@@ -627,81 +479,9 @@
             <td>Your Time Now</td>
             <td id="localTimeNA">--:--:--</td>
           </tr>
-        </tbody>
-      </table>
-    </section>
-    <section class="server-card" id="daily-reset-na" aria-label="Daily Reset Clock North America Server">
-      <h2>Daily Reset Clock (NA)</h2>
-      <table class="time-table">
-        <tbody>
           <tr>
-            <td>Next Reset Server Time</td>
-            <td id="nextResetServerTimeNA">--</td>
-          </tr>
-          <tr>
-            <td>Next Reset Your Time</td>
-            <td id="nextResetLocalTimeNA">--</td>
-          </tr>
-          <tr>
-            <td>Countdown Till Next Reset</td>
-            <td id="countdownResetNA">--</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-    <section class="server-card" id="daily-soiree-na" aria-label="Daily Soiree Clock North America Server">
-      <h2>Daily Soiree Clock (NA)</h2>
-      <table class="time-table">
-        <tbody>
-          <tr>
-            <td>Next Soiree Starts At<br>Server Time</td>
-            <td id="nextSoireeServerTimeNA">--</td>
-          </tr>
-          <tr>
-            <td>Next Soiree Starts At<br>Your Time</td>
-            <td id="nextSoireeLocalTimeNA">--</td>
-          </tr>
-          <tr>
-            <td><span id="soireeCountdownLabelNA">Countdown Till Next Soiree</span></td>
-            <td id="countdownSoireeNA">--</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-    <section class="server-card" id="weekly-reset-na" aria-label="Weekly Reset Clock North America Server">
-      <h2>Weekly Reset Clock (NA)</h2>
-      <table class="time-table">
-        <tbody>
-          <tr>
-            <td>Next Reset Server Time</td>
-            <td id="nextWeeklyResetServerTimeNA">--</td>
-          </tr>
-          <tr>
-            <td>Next Reset Your Time</td>
-            <td id="nextWeeklyResetLocalTimeNA">--</td>
-          </tr>
-          <tr>
-            <td>Countdown Till Next Reset</td>
-            <td id="countdownWeeklyResetNA">--</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-    <section class="server-card" id="mira-reset-na" aria-label="Mira Crown Reset Clock North America Server">
-      <h2>Mira Crown Reset Clock (NA)</h2>
-      <table class="time-table">
-        <tbody>
-          <tr>
-            <td>Next Reset Server Time</td>
-            <td id="nextMiraResetServerTimeNA">--</td>
-          </tr>
-          <tr>
-            <td>Next Reset Your Time</td>
-            <td id="nextMiraResetLocalTimeNA">--</td>
-          </tr>
-          <tr>
-            <td>Countdown Till Next Reset</td>
-            <td id="countdownMiraResetNA">--</td>
+            <td>Daily Reset Countdown</td>
+            <td id="countdownDailyResetNA">--</td>
           </tr>
         </tbody>
       </table>
@@ -720,31 +500,11 @@
     */
     const pad = n => n.toString().padStart(2, '0');
 
-    // New helper function for MM/DD/YYYY format
-    const formatDateMMDDYYYY = date =>
-      `${pad(date.getMonth() + 1)}/${pad(date.getDate())}/${date.getFullYear()}`;
-
-    const formatDateTime = date =>
-      `${formatDateMMDDYYYY(date)} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
-
-    const formatDateYYYYMMDD = date =>
-      `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
-
-    const formatDateTimeInTargetTz = (utcTimestamp, targetOffsetMinutes) => {
-      const targetDate = new Date(utcTimestamp + targetOffsetMinutes * 60 * 1000);
-      const year = targetDate.getUTCFullYear();
-      const month = pad(targetDate.getUTCMonth() + 1);
-      const day = pad(targetDate.getUTCDate());
-      const hours = pad(targetDate.getUTCHours());
-      const minutes = pad(targetDate.getUTCMinutes());
-      const seconds = pad(targetDate.getUTCSeconds());
-      // Use formatDateMMDDYYYY for the date part
-      return `${pad(month)}/${pad(day)}/${year} ${hours}:${minutes}:${seconds}`;
-    };
-
     const formatCountdown = (diffMs) => {
       let diff = Math.max(diffMs, 0);
 
+      const totalHours = Math.floor(diff / (1000 * 60 * 60));
+      
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
       diff -= days * 1000 * 60 * 60 * 24;
       const hours = Math.floor(diff / (1000 * 60 * 60));
@@ -754,7 +514,7 @@
       const seconds = Math.floor(diff / 1000);
 
       let countdownStr = '';
-      if (days > 0) {
+      if (totalHours >= 24) {
         countdownStr += `${days}d `;
       }
       countdownStr += `${hours}h ${minutes}m ${seconds}s`;
@@ -764,39 +524,41 @@
     const buttons = {
       all: document.getElementById("btnAll"),
       as: document.getElementById("btnAsia"),
-      eu: document.getElementById("btnEU"),
+      eu: document.getElementById("btnEurope"),
       na: document.getElementById("btnNA"),
+      tc: document.getElementById("btnTC"),
       themeToggle: document.getElementById("btnThemeToggle"),
     };
 
     const cardGroups = {
-      AS: [
+      ALL_CONTENT: [
+        "timezone-converter",
         "asia-server",
-        "daily-reset-as",
-        "daily-soiree-as",
-        "weekly-reset-as",
-        "mira-reset-as"
+        "europe-server",
+        "na-server"
       ],
-      EU: [
-        "eu-server",
-        "daily-reset-eu",
-        "daily-soiree-eu",
-        "weekly-reset-eu",
-        "mira-reset-eu"
+      AS_ONLY: [
+        "asia-server"
       ],
-      NA: [
-        "na-server",
-        "daily-reset-na",
-        "daily-soiree-na",
-        "weekly-reset-na",
-        "mira-reset-na"
+      EU_ONLY: [
+        "europe-server"
       ],
+      NA_ONLY: [
+        "na-server"
+      ],
+      TC_ONLY: [
+        "timezone-converter"
+      ]
     };
 
     function showCards(groupsToShow) {
-      const allIds = [...cardGroups.AS, ...cardGroups.EU, ...cardGroups.NA,
-                       "timezone-converter"];
-      allIds.forEach(id => {
+      const allPossibleCards = [
+        "timezone-converter",
+        "asia-server",
+        "europe-server",
+        "na-server"
+      ];
+      allPossibleCards.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
           el.style.display = groupsToShow.includes(id) ? "flex" : "none";
@@ -825,27 +587,33 @@
     }
 
     buttons.all.addEventListener("click", () => {
-      showCards([...cardGroups.AS, ...cardGroups.EU, ...cardGroups.NA, "timezone-converter"]);
+      showCards(cardGroups.ALL_CONTENT);
       activateButton(buttons.all.id);
       saveActiveNav(buttons.all.id);
     });
 
     buttons.as.addEventListener("click", () => {
-      showCards([...cardGroups.AS, "timezone-converter"]);
+      showCards(cardGroups.AS_ONLY);
       activateButton(buttons.as.id);
       saveActiveNav(buttons.as.id);
     });
 
     buttons.eu.addEventListener("click", () => {
-      showCards([...cardGroups.EU, "timezone-converter"]);
+      showCards(cardGroups.EU_ONLY);
       activateButton(buttons.eu.id);
       saveActiveNav(buttons.eu.id);
     });
 
     buttons.na.addEventListener("click", () => {
-      showCards([...cardGroups.NA, "timezone-converter"]);
+      showCards(cardGroups.NA_ONLY);
       activateButton(buttons.na.id);
       saveActiveNav(buttons.na.id);
+    });
+
+    buttons.tc.addEventListener("click", () => {
+      showCards(cardGroups.TC_ONLY);
+      activateButton(buttons.tc.id);
+      saveActiveNav(buttons.tc.id);
     });
 
     function saveThemePreference(theme) {
@@ -881,156 +649,127 @@
       if (localTimeEl) localTimeEl.textContent = now.toTimeString().slice(0, 8);
     }
 
-    function updateDailyReset(serverPrefix, utcOffsetHours) {
-      const serverTimeEl = document.getElementById(`nextResetServerTime${serverPrefix}`);
-      const localTimeEl = document.getElementById(`nextResetLocalTime${serverPrefix}`);
-      const countdownEl = document.getElementById(`countdownReset${serverPrefix}`);
+    function updateAsiaDailyResetCountdown() {
+      const countdownEl = document.getElementById('countdownDailyResetAS');
+      const utcOffsetHours = 8;
 
       const now = new Date();
-      const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-      const offsetMs = utcOffsetHours * 60 * 60000;
+      const utcNowMs = now.getTime();
 
-      const nowServer = new Date(utc + offsetMs);
+      const targetUtcHour = (4 - utcOffsetHours + 24) % 24;
+      const targetUtcMinute = 0;
+      const targetUtcSecond = 0;
 
-      let resetServer = new Date(nowServer);
-      resetServer.setUTCHours(4, 0, 0, 0);
+      const currentUtcDate = new Date(utcNowMs);
+      let currentUtcYear = currentUtcDate.getUTCFullYear();
+      let currentUtcMonth = currentUtcDate.getUTCMonth();
+      let currentUtcDay = currentUtcDate.getUTCDate();
+      let currentUtcHour = currentUtcDate.getUTCHours();
+      let currentUtcMinute = currentUtcDate.getUTCMinutes();
+      let currentUtcSecond = currentUtcDate.getUTCSeconds();
 
-      if (nowServer >= resetServer) {
-        resetServer.setUTCDate(resetServer.getUTCDate() + 1);
-      }
+      let nextResetUtcMs;
 
-      const resetUTCms = resetServer.getTime();
-      const resetLocal = new Date(resetUTCms - offsetMs + now.getTimezoneOffset() * 60000 * -1);
-
-      if (serverTimeEl) serverTimeEl.textContent = `${formatDateTime(resetServer)} (UTC${utcOffsetHours >= 0 ? '+' : ''}${utcOffsetHours})`;
-      if (localTimeEl) localTimeEl.textContent = `${formatDateTime(resetLocal)} (${Intl.DateTimeFormat().resolvedOptions().timeZone})`;
-      if (countdownEl) countdownEl.textContent = formatCountdown(resetServer.getTime() - nowServer.getTime());
-    }
-
-    function updateWeeklyReset(serverPrefix, utcOffsetHours) {
-      const serverTimeEl = document.getElementById(`nextWeeklyResetServerTime${serverPrefix}`);
-      const localTimeEl = document.getElementById(`nextWeeklyResetLocalTime${serverPrefix}`);
-      const countdownEl = document.getElementById(`countdownWeeklyReset${serverPrefix}`);
-
-      const now = new Date();
-      const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-      const offsetMs = utcOffsetHours * 60 * 60000;
-
-      const nowServer = new Date(utc + offsetMs);
-
-      let resetServer = new Date(nowServer);
-      resetServer.setUTCHours(4, 0, 0, 0);
-
-      const targetDay = 1; // Monday
-      const currentDay = nowServer.getUTCDay();
-
-      let daysUntilReset = (targetDay - currentDay + 7) % 7;
-      if (daysUntilReset === 0 && nowServer.getUTCHours() >= 4) {
-        daysUntilReset = 7;
-      }
-
-      resetServer.setUTCDate(resetServer.getUTCDate() + daysUntilReset);
-
-      const resetUTCms = resetServer.getTime();
-      const resetLocal = new Date(resetUTCms - offsetMs + now.getTimezoneOffset() * 60000 * -1);
-
-      // Using the new formatDateMMDDYYYY for consistency
-      if (serverTimeEl) serverTimeEl.textContent = `${formatDateMMDDYYYY(resetServer)} ${pad(resetServer.getUTCHours())}:${pad(resetServer.getUTCMinutes())}:${pad(resetServer.getUTCSeconds())} (UTC${utcOffsetHours >= 0 ? '+' : ''}${utcOffsetHours})`;
-      if (localTimeEl) localTimeEl.textContent = `${formatDateTime(resetLocal)} (${Intl.DateTimeFormat().resolvedOptions().timeZone})`;
-      if (countdownEl) countdownEl.textContent = formatCountdown(resetServer.getTime() - nowServer.getTime());
-    }
-
-
-    function updateMiraReset(serverPrefix, utcOffsetHours) {
-      const serverTimeEl = document.getElementById(`nextMiraResetServerTime${serverPrefix}`);
-      const localTimeEl = document.getElementById(`nextMiraResetLocalTime${serverPrefix}`);
-      const countdownEl = document.getElementById(`countdownMiraReset${serverPrefix}`);
-
-      const now = new Date();
-      const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-      const offsetMs = utcOffsetHours * 60 * 60000;
-      const nowServer = new Date(utc + offsetMs);
-
-      let resetServer = new Date(Date.UTC(nowServer.getUTCFullYear(), nowServer.getUTCMonth(), nowServer.getUTCDate(), 4, 0, 0, 0));
-
-      const day = nowServer.getUTCDate();
-      
-      if (day >= 16) {
-          resetServer.setUTCMonth(resetServer.getUTCMonth() + 1, 1);
+      if (currentUtcHour < targetUtcHour) {
+        nextResetUtcMs = Date.UTC(currentUtcYear, currentUtcMonth, currentUtcDay, targetUtcHour, targetUtcMinute, targetUtcSecond);
+      } else if (currentUtcHour > targetUtcHour) {
+        nextResetUtcMs = Date.UTC(currentUtcYear, currentUtcMonth, currentUtcDay + 1, targetUtcHour, targetUtcMinute, targetUtcSecond);
       } else {
-          resetServer.setUTCDate(16);
-      }
-
-      const resetUTCms = resetServer.getTime();
-      const resetLocal = new Date(resetUTCms - offsetMs + now.getTimezoneOffset() * 60000 * -1);
-
-      if (serverTimeEl) serverTimeEl.textContent = `${formatDateTime(new Date(resetUTCms))} (UTC${utcOffsetHours >= 0 ? '+' : ''}${utcOffsetHours})`;
-      if (localTimeEl) localTimeEl.textContent = `${formatDateTime(resetLocal)} (${Intl.DateTimeFormat().resolvedOptions().timeZone})`;
-      if (countdownEl) countdownEl.textContent = formatCountdown(resetUTCms - nowServer.getTime());
-    }
-
-    function updateDailySoiree(serverPrefix, utcOffsetHours) {
-      const serverTimeEl = document.getElementById(`nextSoireeServerTime${serverPrefix}`);
-      const localTimeEl = document.getElementById(`nextSoireeLocalTime${serverPrefix}`);
-      const countdownLabelEl = document.getElementById(`soireeCountdownLabel${serverPrefix}`);
-      const countdownEl = document.getElementById(`countdownSoiree${serverPrefix}`);
-
-      const now = new Date();
-      const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-      const offsetMs = utcOffsetHours * 60 * 60000;
-      const nowServer = new Date(utc + offsetMs);
-
-      let soireeStartServer = new Date(nowServer);
-      soireeStartServer.setUTCHours(20, 0, 0, 0);
-
-      let soireeEndServer = new Date(nowServer);
-      soireeEndServer.setUTCHours(22, 0, 0, 0);
-
-      let displayServerTime;
-      let countdownTargetMs;
-      let countdownLabelText;
-
-      if (nowServer >= soireeStartServer && nowServer < soireeEndServer) {
-        countdownTargetMs = soireeEndServer.getTime();
-        countdownLabelText = "Countdown Till Current Soiree End";
-        displayServerTime = soireeStartServer;
-      } else {
-        if (nowServer >= soireeEndServer) {
-          soireeStartServer.setUTCDate(soireeStartServer.getUTCDate() + 1);
+        if (currentUtcMinute < targetUtcMinute || (currentUtcMinute === targetUtcMinute && currentUtcSecond < targetUtcSecond)) {
+          nextResetUtcMs = Date.UTC(currentUtcYear, currentUtcMonth, currentUtcDay, targetUtcHour, targetUtcMinute, targetUtcSecond);
+        } else {
+          nextResetUtcMs = Date.UTC(currentUtcYear, currentUtcMonth, currentUtcDay + 1, targetUtcHour, targetUtcMinute, targetUtcSecond);
         }
-        countdownTargetMs = soireeStartServer.getTime();
-        countdownLabelText = "Countdown Till Next Soiree";
-        displayServerTime = soireeStartServer;
       }
 
-      const displayUTCms = displayServerTime.getTime();
-      const displayLocal = new Date(displayUTCms - offsetMs + now.getTimezoneOffset() * 60000 * -1);
+      const diffMs = nextResetUtcMs - utcNowMs;
 
-      if (serverTimeEl) serverTimeEl.textContent = `${formatDateTime(new Date(displayUTCms))} (UTC${utcOffsetHours >= 0 ? '+' : ''}${utcOffsetHours})`;
-      if (localTimeEl) localTimeEl.textContent = `${formatDateTime(displayLocal)} (${Intl.DateTimeFormat().resolvedOptions().timeZone})`;
-      if (countdownLabelEl) countdownLabelEl.textContent = countdownLabelText;
-      if (countdownEl) countdownEl.textContent = formatCountdown(countdownTargetMs - nowServer.getTime());
+      if (countdownEl) countdownEl.textContent = formatCountdown(diffMs);
     }
 
+    function updateEuropeDailyResetCountdown() {
+      const countdownEl = document.getElementById('countdownDailyResetEU');
+      const utcOffsetHours = 2;
+
+      const now = new Date();
+      const utcNowMs = now.getTime();
+
+      const targetUtcHour = (4 - utcOffsetHours + 24) % 24;
+      const targetUtcMinute = 0;
+      const targetUtcSecond = 0;
+
+      const currentUtcDate = new Date(utcNowMs);
+      let currentUtcYear = currentUtcDate.getUTCFullYear();
+      let currentUtcMonth = currentUtcDate.getUTCMonth();
+      let currentUtcDay = currentUtcDate.getUTCDate();
+      let currentUtcHour = currentUtcDate.getUTCHours();
+      let currentUtcMinute = currentUtcDate.getUTCMinutes();
+      let currentUtcSecond = currentUtcDate.getUTCSeconds();
+
+      let nextResetUtcMs;
+
+      if (currentUtcHour < targetUtcHour) {
+        nextResetUtcMs = Date.UTC(currentUtcYear, currentUtcMonth, currentUtcDay, targetUtcHour, targetUtcMinute, targetUtcSecond);
+      } else if (currentUtcHour > targetUtcHour) {
+        nextResetUtcMs = Date.UTC(currentUtcYear, currentUtcMonth, currentUtcDay + 1, targetUtcHour, targetUtcMinute, targetUtcSecond);
+      } else {
+        if (currentUtcMinute < targetUtcMinute || (currentUtcMinute === targetUtcMinute && currentUtcSecond < targetUtcSecond)) {
+          nextResetUtcMs = Date.UTC(currentUtcYear, currentUtcMonth, currentUtcDay, targetUtcHour, targetUtcMinute, targetUtcSecond);
+        } else {
+          nextResetUtcMs = Date.UTC(currentUtcYear, currentUtcMonth, currentUtcDay + 1, targetUtcHour, targetUtcMinute, targetUtcSecond);
+        }
+      }
+
+      const diffMs = nextResetUtcMs - utcNowMs;
+
+      if (countdownEl) countdownEl.textContent = formatCountdown(diffMs);
+    }
+
+    function updateNADailyResetCountdown() {
+      const countdownEl = document.getElementById('countdownDailyResetNA');
+      const utcOffsetHours = -7;
+
+      const now = new Date();
+      const utcNowMs = now.getTime();
+
+      const targetUtcHour = (4 - utcOffsetHours + 24) % 24;
+      const targetUtcMinute = 0;
+      const targetUtcSecond = 0;
+
+      const currentUtcDate = new Date(utcNowMs);
+      let currentUtcYear = currentUtcDate.getUTCFullYear();
+      let currentUtcMonth = currentUtcDate.getUTCMonth();
+      let currentUtcDay = currentUtcDate.getUTCDate();
+      let currentUtcHour = currentUtcDate.getUTCHours();
+      let currentUtcMinute = currentUtcDate.getUTCMinutes();
+      let currentUtcSecond = currentUtcDate.getUTCSeconds();
+
+      let nextResetUtcMs;
+
+      if (currentUtcHour < targetUtcHour) {
+        nextResetUtcMs = Date.UTC(currentUtcYear, currentUtcMonth, currentUtcDay, targetUtcHour, targetUtcMinute, targetUtcSecond);
+      } else if (currentUtcHour > targetUtcHour) {
+        nextResetUtcMs = Date.UTC(currentUtcYear, currentUtcMonth, currentUtcDay + 1, targetUtcHour, targetUtcMinute, targetUtcSecond);
+      } else {
+        if (currentUtcMinute < targetUtcMinute || (currentUtcMinute === targetUtcMinute && currentUtcSecond < targetUtcSecond)) {
+          nextResetUtcMs = Date.UTC(currentUtcYear, currentUtcMonth, currentUtcDay, targetUtcHour, targetUtcMinute, targetUtcSecond);
+        } else {
+          nextResetUtcMs = Date.UTC(currentUtcYear, currentUtcMonth, currentUtcDay + 1, targetUtcHour, targetUtcMinute, targetUtcSecond);
+        }
+      }
+
+      const diffMs = nextResetUtcMs - utcNowMs;
+
+      if (countdownEl) countdownEl.textContent = formatCountdown(diffMs);
+    }
 
     const initializeClocks = () => {
       updateServerTime('Asia', 8);
-      updateDailyReset('AS', 8);
-      updateWeeklyReset('AS', 8);
-      updateMiraReset('AS', 8);
-      updateDailySoiree('AS', 8);
-
-      updateServerTime('EU', 2);
-      updateDailyReset('EU', 2);
-      updateWeeklyReset('EU', 2);
-      updateMiraReset('EU', 2);
-      updateDailySoiree('EU', 2);
-
+      updateAsiaDailyResetCountdown();
+      updateServerTime('Europe', 2);
+      updateEuropeDailyResetCountdown();
       updateServerTime('NA', -7);
-      updateDailyReset('NA', -7);
-      updateWeeklyReset('NA', -7);
-      updateMiraReset('NA', -7);
-      updateDailySoiree('NA', -7);
+      updateNADailyResetCountdown();
     };
 
     const utcTimezones = [
@@ -1108,16 +847,12 @@
     }
 
     const now = new Date();
-    // Set default date to today in YYYY-MM-DD format for input type="date"
     dateInput.value = now.toISOString().split('T')[0];
     timeInput.value = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
 
     function validateTimeFormat(timeStr) {
       return /^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/.test(timeStr);
     }
-
-    // Removed validateDateFormat as input type="date" handles validation
-    // Removed dateInput event listener for formatting as input type="date" handles it
 
     function parseUTCOffset(offsetStr) {
         const match = offsetStr.match(/UTC([+-])(\d+)(?::(\d+))?/);
@@ -1131,7 +866,7 @@
     function convertTime() {
       const fromTz = fromTzSelect.value;
       const toTz = toTzSelect.value;
-      const dateStr = dateInput.value; // Value is already in YYYY-MM-DD
+      const dateStr = dateInput.value;
       const timeStr = timeInput.value;
 
       if (!fromTz || !toTz || !dateStr || !timeStr) {
@@ -1139,7 +874,6 @@
         return;
       }
 
-      // No need for validateDateFormat here, as input type="date" handles it
       if (!validateTimeFormat(timeStr)) {
         resultDiv.textContent = 'Conversion Result: Invalid time format. Use HH:mm:ss (24h)';
         return;
@@ -1149,21 +883,18 @@
         const [year, month, day] = dateStr.split('-').map(Number);
         const [fromHours, fromMinutes, fromSeconds] = timeStr.split(':').map(Number);
 
-
         const totalFromOffsetMinutes = parseUTCOffset(fromTz);
         const totalToOffsetMinutes = parseUTCOffset(toTz);
 
-        // Construct Date object using UTC components to avoid local timezone issues
-        const inputDateInUTC = new Date(Date.UTC(year, month - 1, day, fromHours, fromMinutes, fromSeconds));
-        // Adjust to true UTC timestamp based on the 'from' timezone's offset
-        const trueUtcTimestamp = inputDateInUTC.getTime() - totalFromOffsetMinutes * 60 * 1000;
+        const inputDateAsUtcComponents = new Date(Date.UTC(year, month - 1, day, fromHours, fromMinutes, fromSeconds));
 
-        const toDate = new Date(trueUtcTimestamp);
+        const trueUtcTimestamp = inputDateAsUtcComponents.getTime() - totalFromOffsetMinutes * 60 * 1000;
 
-        resultDiv.textContent = `Conversion Result: ${formatDateTimeInTargetTz(toDate.getTime(), totalToOffsetMinutes)} (${toTz})`;
+        const conversionResult = formatDateTimeInTargetTz(trueUtcTimestamp, totalToOffsetMinutes);
+        resultDiv.textContent = `Conversion Result: ${conversionResult} (${toTz})`;
+
       } catch (e) {
         resultDiv.textContent = 'Conversion Result: Error during conversion';
-        console.error(e);
       }
     }
 
@@ -1203,8 +934,6 @@
       input.setSelectionRange(newCursorPos, newCursorPos);
     });
 
-    // Removed dateInput.addEventListener('input', ...) as type="date" handles formatting
-
     ['change', 'input'].forEach(evt => {
       fromTzSelect.addEventListener(evt, convertTime);
       toTzSelect.addEventListener(evt, convertTime);
@@ -1224,16 +953,20 @@
         let buttonToActivate = buttons.all.id;
 
         if (lastActiveNav === buttons.as.id) {
-            groupsToDisplay = [...cardGroups.AS, "timezone-converter"];
+            groupsToDisplay = cardGroups.AS_ONLY;
             buttonToActivate = buttons.as.id;
         } else if (lastActiveNav === buttons.eu.id) {
-            groupsToDisplay = [...cardGroups.EU, "timezone-converter"];
+            groupsToDisplay = cardGroups.EU_ONLY;
             buttonToActivate = buttons.eu.id;
         } else if (lastActiveNav === buttons.na.id) {
-            groupsToDisplay = [...cardGroups.NA, "timezone-converter"];
+            groupsToDisplay = cardGroups.NA_ONLY;
             buttonToActivate = buttons.na.id;
-        } else {
-            groupsToDisplay = [...cardGroups.AS, ...cardGroups.EU, ...cardGroups.NA, "timezone-converter"];
+        } else if (lastActiveNav === buttons.tc.id) {
+            groupsToDisplay = cardGroups.TC_ONLY;
+            buttonToActivate = buttons.tc.id;
+        }
+        else {
+            groupsToDisplay = cardGroups.ALL_CONTENT;
             buttonToActivate = buttons.all.id;
         }
 
