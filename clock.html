@@ -152,6 +152,16 @@
         border-top: 1px solid #F8E0E6;
     }
 
+    /* New CSS for the Countdown Display */
+    .countdown-display {
+        font-size: clamp(1.5rem, 4vw, 2rem);
+        text-align: center;
+        font-weight: 700;
+        color: #E6A4B4;
+        padding: 15px 0;
+        letter-spacing: 0.05em;
+    }
+
     .dark {
         background-color: #4c3b4d;
         color: #F8E0E6;
@@ -189,6 +199,11 @@
         color: #F2C4D2;
         border-bottom-color: #8c7b9b;
     }
+    /* Dark mode for countdown display */
+    .dark .countdown-display {
+        color: #F2C4D2;
+    }
+
     .dark select, .dark input {
         background-color: #4c3b4d;
         border-color: #8c7b9b;
@@ -398,6 +413,17 @@
   </nav>
 
   <main id="main-content" aria-live="polite" aria-atomic="true">
+    
+    <section class="server-card" id="release-countdown" aria-label="Countdown to Infinity Nikki 2.0">
+      <h2>Countdown to Infinity Nikki 2.0</h2>
+      <div id="releaseTimerDisplay" class="countdown-display">
+        --d --h --m --s
+      </div>
+      <div style="text-align: center; font-size: 0.9em; opacity: 0.7;">
+        Time Update Will Be Live: Nov 26, 2025 11:00 (UTC+8)
+      </div>
+    </section>
+
     <section id="timezone-converter" aria-label="Timezone converter section">
       <h2>Timezone Converter</h2>
       <form id="tzConverterForm" aria-label="Timezone converter form" autocomplete="off">
@@ -544,6 +570,7 @@
 
     const cardGroups = {
       ALL_CONTENT: [
+        "release-countdown",
         "timezone-converter",
         "asia-server",
         "europe-server",
@@ -565,6 +592,7 @@
 
     function showCards(groupsToShow) {
       const allPossibleCards = [
+        "release-countdown",
         "timezone-converter",
         "asia-server",
         "europe-server",
@@ -775,7 +803,27 @@
       if (countdownEl) countdownEl.textContent = formatCountdown(diffMs);
     }
 
+    function updateReleaseCountdown() {
+      const displayEl = document.getElementById('releaseTimerDisplay');
+      
+      // Target: Nov 26, 2025 11:00:00 UTC+8
+      // Convert to UTC+0: Nov 26, 2025 03:00:00
+      // Note: Month is 0-indexed (0=Jan, ... 10=Nov)
+      const targetDate = Date.UTC(2025, 10, 26, 3, 0, 0); 
+      const now = Date.now();
+      const diff = targetDate - now;
+
+      if (displayEl) {
+        if (diff <= 0) {
+            displayEl.textContent = "Released!";
+        } else {
+            displayEl.textContent = formatCountdown(diff);
+        }
+      }
+    }
+
     const initializeClocks = () => {
+      updateReleaseCountdown();
       updateServerTime('Asia', 8);
       updateAsiaDailyResetCountdown();
       updateServerTime('Europe', 2);
