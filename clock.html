@@ -414,13 +414,13 @@
 
   <main id="main-content" aria-live="polite" aria-atomic="true">
     
-    <section class="server-card" id="release-countdown" aria-label="Countdown to Infinity Nikki 2.0">
-      <h2>Countdown to Infinity Nikki 2.0</h2>
+    <section class="server-card" id="release-countdown" aria-label="Countdown to Nikki's Birthday Livestream">
+      <h2>Countdown to Nikki's Birthday Livestream</h2>
       <div id="releaseTimerDisplay" class="countdown-display">
         --d --h --m --s
       </div>
       <div style="text-align: center; font-size: 0.9em; opacity: 0.7;">
-        Time Update Will Be Live: Nov 26, 2025 11:00 (UTC+8)
+        Nikki's Birthday Livestream Schedule: Dec 06, 2025 20:15 (UTC+8)
       </div>
     </section>
 
@@ -806,10 +806,7 @@
     function updateReleaseCountdown() {
       const displayEl = document.getElementById('releaseTimerDisplay');
       
-      // Target: Nov 26, 2025 11:00:00 UTC+8
-      // Convert to UTC+0: Nov 26, 2025 03:00:00
-      // Note: Month is 0-indexed (0=Jan, ... 10=Nov)
-      const targetDate = Date.UTC(2025, 10, 26, 3, 0, 0); 
+      const targetDate = Date.UTC(2025, 11, 06, 12, 15, 0); 
       const now = Date.now();
       const diff = targetDate - now;
 
@@ -1040,3 +1037,4 @@
   </script>
 </body>
 </html>
+
