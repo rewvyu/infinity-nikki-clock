@@ -152,7 +152,6 @@
         border-top: 1px solid #F8E0E6;
     }
 
-    /* New CSS for the Countdown Display */
     .countdown-display {
         font-size: clamp(1.5rem, 4vw, 2rem);
         text-align: center;
@@ -199,7 +198,6 @@
         color: #F2C4D2;
         border-bottom-color: #8c7b9b;
     }
-    /* Dark mode for countdown display */
     .dark .countdown-display {
         color: #F2C4D2;
     }
@@ -414,13 +412,13 @@
 
   <main id="main-content" aria-live="polite" aria-atomic="true">
     
-    <section class="server-card" id="release-countdown" aria-label="Countdown to Nikki's Birthday Livestream">
-      <h2>Countdown to Nikki's Birthday Livestream</h2>
+    <section class="server-card" id="release-countdown">
+      <h2 id="release-title">Countdown to Event</h2>
       <div id="releaseTimerDisplay" class="countdown-display">
         --d --h --m --s
       </div>
-      <div style="text-align: center; font-size: 0.9em; opacity: 0.7;">
-        Nikki's Birthday Livestream Schedule: Dec 06, 2025 20:15 (UTC+8)
+      <div id="release-schedule" style="text-align: center; font-size: 0.9em; opacity: 0.7;">
+        Update Schedule: Loading...
       </div>
     </section>
 
@@ -522,11 +520,25 @@
     /*
     Infinity Nikki Clocks & Timezone Converter
     Made by Rewvyu
-    https://www.tumblr.com/rewvyu
     */
+
+    // ==========================================
+    // EASY EDIT CONFIGURATION
+    // ==========================================
+    const COUNTDOWN_CONFIG = {
+      title: "Infinity Nikki 2.2 Mid-Season Update",
+      year: 2026,
+      month: 2,   // Use 1 for Jan, 2 for Feb, etc.
+      day: 14,
+      hour: 11,   // 24-hour format
+      minute: 0,
+      timezoneOffset: 8, // UTC+8
+      finishMessage: "Live Now!"
+    };
+    // ==========================================
+
     const pad = n => n.toString().padStart(2, '0');
 
-    // Changed to function declaration for hoisting robustness
     function formatDateTimeInTargetTz(utcTimestamp, targetOffsetMinutes) {
       const targetDate = new Date(utcTimestamp + targetOffsetMinutes * 60 * 1000);
       const year = targetDate.getUTCFullYear();
@@ -540,9 +552,7 @@
 
     const formatCountdown = (diffMs) => {
       let diff = Math.max(diffMs, 0);
-
       const totalHours = Math.floor(diff / (1000 * 60 * 60));
-      
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
       diff -= days * 1000 * 60 * 60 * 24;
       const hours = Math.floor(diff / (1000 * 60 * 60));
@@ -559,6 +569,34 @@
       return countdownStr;
     };
 
+    function updateReleaseCountdown() {
+      const displayEl = document.getElementById('releaseTimerDisplay');
+      
+      // Calculate target UTC hour based on timezone offset
+      const targetUtcHour = COUNTDOWN_CONFIG.hour - COUNTDOWN_CONFIG.timezoneOffset;
+      
+      const targetDate = Date.UTC(
+        COUNTDOWN_CONFIG.year, 
+        COUNTDOWN_CONFIG.month - 1, // JS Month is 0-indexed
+        COUNTDOWN_CONFIG.day, 
+        targetUtcHour, 
+        COUNTDOWN_CONFIG.minute, 
+        0
+      ); 
+
+      const now = Date.now();
+      const diff = targetDate - now;
+
+      if (displayEl) {
+        if (diff <= 0) {
+            displayEl.textContent = COUNTDOWN_CONFIG.finishMessage;
+        } else {
+            displayEl.textContent = formatCountdown(diff);
+        }
+      }
+    }
+
+    // Navigation and Theme Logic
     const buttons = {
       all: document.getElementById("btnAll"),
       as: document.getElementById("btnAsia"),
@@ -569,295 +607,88 @@
     };
 
     const cardGroups = {
-      ALL_CONTENT: [
-        "release-countdown",
-        "timezone-converter",
-        "asia-server",
-        "europe-server",
-        "na-server"
-      ],
-      AS_ONLY: [
-        "asia-server"
-      ],
-      EU_ONLY: [
-        "europe-server"
-      ],
-      NA_ONLY: [
-        "na-server"
-      ],
-      TC_ONLY: [
-        "timezone-converter"
-      ]
+      ALL_CONTENT: ["release-countdown", "timezone-converter", "asia-server", "europe-server", "na-server"],
+      AS_ONLY: ["asia-server"],
+      EU_ONLY: ["europe-server"],
+      NA_ONLY: ["na-server"],
+      TC_ONLY: ["timezone-converter"]
     };
 
     function showCards(groupsToShow) {
-      const allPossibleCards = [
-        "release-countdown",
-        "timezone-converter",
-        "asia-server",
-        "europe-server",
-        "na-server"
-      ];
+      const allPossibleCards = ["release-countdown", "timezone-converter", "asia-server", "europe-server", "na-server"];
       allPossibleCards.forEach(id => {
         const el = document.getElementById(id);
-        if (el) {
-          el.style.display = groupsToShow.includes(id) ? "flex" : "none";
-        }
+        if (el) el.style.display = groupsToShow.includes(id) ? "flex" : "none";
       });
     }
 
-    function saveActiveNav(buttonId) {
-        localStorage.setItem('activeNavButton', buttonId);
-    }
-
-    function loadActiveNav() {
-        return localStorage.getItem('activeNavButton') || 'btnAll';
-    }
+    function saveActiveNav(buttonId) { localStorage.setItem('activeNavButton', buttonId); }
+    function loadActiveNav() { return localStorage.getItem('activeNavButton') || 'btnAll'; }
 
     function activateButton(activeBtnId) {
-      Object.values(buttons).forEach(btn => {
-        if (btn.id !== 'btnThemeToggle') {
-          btn.classList.remove("active");
-        }
-      });
+      Object.values(buttons).forEach(btn => { if (btn.id !== 'btnThemeToggle') btn.classList.remove("active"); });
       const activeBtn = document.getElementById(activeBtnId);
-      if (activeBtn) {
-        activeBtn.classList.add("active");
-      }
+      if (activeBtn) activeBtn.classList.add("active");
     }
 
-    buttons.all.addEventListener("click", () => {
-      showCards(cardGroups.ALL_CONTENT);
-      activateButton(buttons.all.id);
-      saveActiveNav(buttons.all.id);
-    });
-
-    buttons.as.addEventListener("click", () => {
-      showCards(cardGroups.AS_ONLY);
-      activateButton(buttons.as.id);
-      saveActiveNav(buttons.as.id);
-    });
-
-    buttons.eu.addEventListener("click", () => {
-      showCards(cardGroups.EU_ONLY);
-      activateButton(buttons.eu.id);
-      saveActiveNav(buttons.eu.id);
-    });
-
-    buttons.na.addEventListener("click", () => {
-      showCards(cardGroups.NA_ONLY);
-      activateButton(buttons.na.id);
-      saveActiveNav(buttons.na.id);
-    });
-
-    buttons.tc.addEventListener("click", () => {
-      showCards(cardGroups.TC_ONLY);
-      activateButton(buttons.tc.id);
-      saveActiveNav(buttons.tc.id);
-    });
-
-    function saveThemePreference(theme) {
-        localStorage.setItem('theme', theme);
-    }
-
-    function loadThemePreference() {
-        return localStorage.getItem('theme') || 'light';
-    }
-
-    function updateThemeToggleText() {
-        const isDarkMode = document.body.classList.contains('dark');
-        buttons.themeToggle.textContent = isDarkMode ? '🌞' : '🌛';
-    }
+    buttons.all.addEventListener("click", () => { showCards(cardGroups.ALL_CONTENT); activateButton(buttons.all.id); saveActiveNav(buttons.all.id); });
+    buttons.as.addEventListener("click", () => { showCards(cardGroups.AS_ONLY); activateButton(buttons.as.id); saveActiveNav(buttons.as.id); });
+    buttons.eu.addEventListener("click", () => { showCards(cardGroups.EU_ONLY); activateButton(buttons.eu.id); saveActiveNav(buttons.eu.id); });
+    buttons.na.addEventListener("click", () => { showCards(cardGroups.NA_ONLY); activateButton(buttons.na.id); saveActiveNav(buttons.na.id); });
+    buttons.tc.addEventListener("click", () => { showCards(cardGroups.TC_ONLY); activateButton(buttons.tc.id); saveActiveNav(buttons.tc.id); });
 
     buttons.themeToggle.addEventListener('click', () => {
       document.body.classList.toggle('dark');
-      const currentTheme = document.body.classList.contains('dark') ? 'dark' : 'light';
-      saveThemePreference(currentTheme);
-      updateThemeToggleText();
+      localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+      buttons.themeToggle.textContent = document.body.classList.contains('dark') ? '🌞' : '🌛';
     });
 
+    // Server Time Clocks
     function updateServerTime(serverPrefix, utcOffsetHours) {
       const serverTimeEl = document.getElementById(`${serverPrefix.toLowerCase()}ServerTime`);
       const localTimeEl = document.getElementById(`localTime${serverPrefix}`);
-
       const now = new Date();
       const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-      const serverOffsetMs = utcOffsetHours * 60 * 60000;
-      const serverDate = new Date(utc + serverOffsetMs);
-
+      const serverDate = new Date(utc + (utcOffsetHours * 3600000));
       if (serverTimeEl) serverTimeEl.textContent = serverDate.toTimeString().slice(0, 8);
       if (localTimeEl) localTimeEl.textContent = now.toTimeString().slice(0, 8);
     }
 
-    function updateAsiaDailyResetCountdown() {
-      const countdownEl = document.getElementById('countdownDailyResetAS');
-      const utcOffsetHours = 8;
-
+    function updateDailyReset(elementId, utcOffsetHours) {
+      const countdownEl = document.getElementById(elementId);
+      if (!countdownEl) return;
       const now = new Date();
       const utcNowMs = now.getTime();
-
       const targetUtcHour = (4 - utcOffsetHours + 24) % 24;
-      const targetUtcMinute = 0;
-      const targetUtcSecond = 0;
-
       const currentUtcDate = new Date(utcNowMs);
-      let currentUtcYear = currentUtcDate.getUTCFullYear();
-      let currentUtcMonth = currentUtcDate.getUTCMonth();
-      let currentUtcDay = currentUtcDate.getUTCDate();
-      let currentUtcHour = currentUtcDate.getUTCHours();
-      let currentUtcMinute = currentUtcDate.getUTCMinutes();
-      let currentUtcSecond = currentUtcDate.getUTCSeconds();
-
-      let nextResetUtcMs;
-
-      if (currentUtcHour < targetUtcHour) {
-        nextResetUtcMs = Date.UTC(currentUtcYear, currentUtcMonth, currentUtcDay, targetUtcHour, targetUtcMinute, targetUtcSecond);
-      } else if (currentUtcHour > targetUtcHour) {
-        nextResetUtcMs = Date.UTC(currentUtcYear, currentUtcMonth, currentUtcDay + 1, targetUtcHour, targetUtcMinute, targetUtcSecond);
-      } else {
-        if (currentUtcMinute < targetUtcMinute || (currentUtcMinute === targetUtcMinute && currentUtcSecond < targetUtcSecond)) {
-          nextResetUtcMs = Date.UTC(currentUtcYear, currentUtcMonth, currentUtcDay, targetUtcHour, targetUtcMinute, targetUtcSecond);
-        } else {
-          nextResetUtcMs = Date.UTC(currentUtcYear, currentUtcMonth, currentUtcDay + 1, targetUtcHour, targetUtcMinute, targetUtcSecond);
-        }
-      }
-
-      const diffMs = nextResetUtcMs - utcNowMs;
-
-      if (countdownEl) countdownEl.textContent = formatCountdown(diffMs);
-    }
-
-    function updateEuropeDailyResetCountdown() {
-      const countdownEl = document.getElementById('countdownDailyResetEU');
-      const utcOffsetHours = 2;
-
-      const now = new Date();
-      const utcNowMs = now.getTime();
-
-      const targetUtcHour = (4 - utcOffsetHours + 24) % 24;
-      const targetUtcMinute = 0;
-      const targetUtcSecond = 0;
-
-      const currentUtcDate = new Date(utcNowMs);
-      let currentUtcYear = currentUtcDate.getUTCFullYear();
-      let currentUtcMonth = currentUtcDate.getUTCMonth();
-      let currentUtcDay = currentUtcDate.getUTCDate();
-      let currentUtcHour = currentUtcDate.getUTCHours();
-      let currentUtcMinute = currentUtcDate.getUTCMinutes();
-      let currentUtcSecond = currentUtcDate.getUTCSeconds();
-
-      let nextResetUtcMs;
-
-      if (currentUtcHour < targetUtcHour) {
-        nextResetUtcMs = Date.UTC(currentUtcYear, currentUtcMonth, currentUtcDay, targetUtcHour, targetUtcMinute, targetUtcSecond);
-      } else if (currentUtcHour > targetUtcHour) {
-        nextResetUtcMs = Date.UTC(currentUtcYear, currentUtcMonth, currentUtcDay + 1, targetUtcHour, targetUtcMinute, targetUtcSecond);
-      } else {
-        if (currentUtcMinute < targetUtcMinute || (currentUtcMinute === targetUtcMinute && currentUtcSecond < targetUtcSecond)) {
-          nextResetUtcMs = Date.UTC(currentUtcYear, currentUtcMonth, currentUtcDay, targetUtcHour, targetUtcMinute, targetUtcSecond);
-        } else {
-          nextResetUtcMs = Date.UTC(currentUtcYear, currentUtcMonth, currentUtcDay + 1, targetUtcHour, targetUtcMinute, targetUtcSecond);
-        }
-      }
-
-      const diffMs = nextResetUtcMs - utcNowMs;
-
-      if (countdownEl) countdownEl.textContent = formatCountdown(diffMs);
-    }
-
-    function updateNADailyResetCountdown() {
-      const countdownEl = document.getElementById('countdownDailyResetNA');
-      const utcOffsetHours = -7;
-
-      const now = new Date();
-      const utcNowMs = now.getTime();
-
-      const targetUtcHour = (4 - utcOffsetHours + 24) % 24;
-      const targetUtcMinute = 0;
-      const targetUtcSecond = 0;
-
-      const currentUtcDate = new Date(utcNowMs);
-      let currentUtcYear = currentUtcDate.getUTCFullYear();
-      let currentUtcMonth = currentUtcDate.getUTCMonth();
-      let currentUtcDay = currentUtcDate.getUTCDate();
-      let currentUtcHour = currentUtcDate.getUTCHours();
-      let currentUtcMinute = currentUtcDate.getUTCMinutes();
-      let currentUtcSecond = currentUtcDate.getUTCSeconds();
-
-      let nextResetUtcMs;
-
-      if (currentUtcHour < targetUtcHour) {
-        nextResetUtcMs = Date.UTC(currentUtcYear, currentUtcMonth, currentUtcDay, targetUtcHour, targetUtcMinute, targetUtcSecond);
-      } else if (currentUtcHour > targetUtcHour) {
-        nextResetUtcMs = Date.UTC(currentUtcYear, currentUtcMonth, currentUtcDay + 1, targetUtcHour, targetUtcMinute, targetUtcSecond);
-      } else {
-        if (currentUtcMinute < targetUtcMinute || (currentUtcMinute === targetUtcMinute && currentUtcSecond < targetUtcSecond)) {
-          nextResetUtcMs = Date.UTC(currentUtcYear, currentUtcMonth, currentUtcDay, targetUtcHour, targetUtcMinute, targetUtcSecond);
-        } else {
-          nextResetUtcMs = Date.UTC(currentUtcYear, currentUtcMonth, currentUtcDay + 1, targetUtcHour, targetUtcMinute, targetUtcSecond);
-        }
-      }
-
-      const diffMs = nextResetUtcMs - utcNowMs;
-
-      if (countdownEl) countdownEl.textContent = formatCountdown(diffMs);
-    }
-
-    function updateReleaseCountdown() {
-      const displayEl = document.getElementById('releaseTimerDisplay');
-      
-      const targetDate = Date.UTC(2025, 11, 06, 12, 15, 0); 
-      const now = Date.now();
-      const diff = targetDate - now;
-
-      if (displayEl) {
-        if (diff <= 0) {
-            displayEl.textContent = "Released!";
-        } else {
-            displayEl.textContent = formatCountdown(diff);
-        }
-      }
+      let nextReset = Date.UTC(currentUtcDate.getUTCFullYear(), currentUtcDate.getUTCMonth(), currentUtcDate.getUTCDate(), targetUtcHour, 0, 0);
+      if (utcNowMs >= nextReset) nextReset += 86400000;
+      countdownEl.textContent = formatCountdown(nextReset - utcNowMs);
     }
 
     const initializeClocks = () => {
       updateReleaseCountdown();
-      updateServerTime('Asia', 8);
-      updateAsiaDailyResetCountdown();
-      updateServerTime('Europe', 2);
-      updateEuropeDailyResetCountdown();
-      updateServerTime('NA', -7);
-      updateNADailyResetCountdown();
+      updateServerTime('Asia', 8); updateDailyReset('countdownDailyResetAS', 8);
+      updateServerTime('Europe', 2); updateDailyReset('countdownDailyResetEU', 2);
+      updateServerTime('NA', -7); updateDailyReset('countdownDailyResetNA', -7);
     };
 
+    // Timezone Converter Logic
     const utcTimezones = [
-      { offset: -12, label: "UTC-12 — Baker Island" },
-      { offset: -11, label: "UTC-11 — Pago Pago, Niue, American Samoa" },
-      { offset: -10, label: "UTC-10 — Honolulu, Papeete, Rarotonga" },
-      { offset: -9,  label: "UTC-9 — Anchorage, Juneau, Yakutat" },
-      { offset: -8,  label: "UTC-8 — Los Angeles, Vancouver, Tijuana" },
-      { offset: -7,  label: "UTC-7 — Denver, Edmonton, Chihuahua" },
-      { offset: -6,  label: "UTC-6 — Chicago, Mexico City, Guatemala City" },
-      { offset: -5,  label: "UTC-5 — New York, Toronto, Lima" },
-      { offset: -4,  label: "UTC-4 — Santiago, Caracas, La Paz" },
-      { offset: -3,  label: "UTC-3 — Buenos Aires, São Paulo, Montevideo" },
-      { offset: -2,  label: "UTC-2 — South Georgia, Azores" },
-      { offset: -1,  label: "UTC-1 — Cape Verde, Azores" },
-      { offset: 0,   label: "UTC+0 — London, Lisbon, Casablanca" },
-      { offset: 1,   label: "UTC+1 — Berlin, Paris, Rome" },
-      { offset: 2,   label: "UTC+2 — Athens, Cairo, Johannesburg" },
-      { offset: 3,   label: "UTC+3 — Moscow, Istanbul, Nairobi" },
-      { offset: 4,   label: "UTC+4 — Dubai, Baku, Samara" },
-      { offset: 5,   label: "UTC+5 — Karachi, Tashkent, Yekaterinburg" },
-      { offset: 5.5, label: "UTC+5:30 — Mumbai, Delhi, Colombo" },
-      { offset: 6,   label: "UTC+6 — Dhaka, Almaty, Omsk" },
-      { offset: 7,   label: "UTC+7 — Bangkok, Jakarta, Hanoi" },
-      { offset: 8,   label: "UTC+8 — Singapore, Beijing, Manila" },
-      { offset: 9,   label: "UTC+9 — Tokyo, Seoul, Pyongyang" },
-      { offset: 9.5, label: "UTC+9:30 — Adelaide, Darwin" },
-      { offset: 10,  label: "UTC+10 — Sydney, Guam, Vladivostok" },
-      { offset: 11,  label: "UTC+11 — Magadan, Solomon Islands" },
-      { offset: 12,  label: "UTC+12 — Auckland, Fiji, Kamchatka" },
-      { offset: 13,  label: "UTC+13 — Nuku'alofa, Phoenix Islands" },
+      { offset: -12, label: "UTC-12 — Baker Island" }, { offset: -11, label: "UTC-11 — Pago Pago" },
+      { offset: -10, label: "UTC-10 — Honolulu" }, { offset: -9,  label: "UTC-9 — Anchorage" },
+      { offset: -8,  label: "UTC-8 — Los Angeles" }, { offset: -7,  label: "UTC-7 — Denver" },
+      { offset: -6,  label: "UTC-6 — Chicago" }, { offset: -5,  label: "UTC-5 — New York" },
+      { offset: -4,  label: "UTC-4 — Santiago" }, { offset: -3,  label: "UTC-3 — Buenos Aires" },
+      { offset: -2,  label: "UTC-2 — South Georgia" }, { offset: -1,  label: "UTC-1 — Cape Verde" },
+      { offset: 0,   label: "UTC+0 — London" }, { offset: 1,   label: "UTC+1 — Berlin" },
+      { offset: 2,   label: "UTC+2 — Athens" }, { offset: 3,   label: "UTC+3 — Moscow" },
+      { offset: 4,   label: "UTC+4 — Dubai" }, { offset: 5,   label: "UTC+5 — Karachi" },
+      { offset: 5.5, label: "UTC+5:30 — Mumbai" }, { offset: 6,   label: "UTC+6 — Dhaka" },
+      { offset: 7,   label: "UTC+7 — Bangkok" }, { offset: 8,   label: "UTC+8 — Singapore" },
+      { offset: 9,   label: "UTC+9 — Tokyo" }, { offset: 9.5, label: "UTC+9:30 — Adelaide" },
+      { offset: 10,  label: "UTC+10 — Sydney" }, { offset: 11,  label: "UTC+11 — Magadan" },
+      { offset: 12,  label: "UTC+12 — Auckland" }, { offset: 13,  label: "UTC+13 — Phoenix Is." },
       { offset: 14,  label: "UTC+14 — Kiritimati" }
     ];
 
@@ -868,15 +699,11 @@
     const resultDiv = document.getElementById('result');
 
     function formatOffset(offset) {
-      if (offset % 1 !== 0) {
-        const hours = Math.floor(offset);
-        const minutes = (offset % 1) * 60;
-        const sign = offset >= 0 ? '+' : '-';
-        return `UTC${sign}${Math.abs(hours)}:${minutes === 30 ? '30' : '00'}`;
-      } else {
-        const sign = offset >= 0 ? '+' : '-';
-        return `UTC${sign}${Math.abs(offset)}`;
-      }
+      const sign = offset >= 0 ? '+' : '-';
+      const absOffset = Math.abs(offset);
+      const h = Math.floor(absOffset);
+      const m = (absOffset % 1) * 60;
+      return `UTC${sign}${h}${m === 30 ? ':30' : ''}`;
     }
 
     function populateDropdown(selectEl) {
@@ -888,153 +715,55 @@
       });
     }
 
-    populateDropdown(fromTzSelect);
-    populateDropdown(toTzSelect);
-
-    fromTzSelect.value = "UTC+8";
-    try {
-      const now = new Date();
-      const userOffsetMinutes = -now.getTimezoneOffset();
-      const userOffset = userOffsetMinutes / 60;
-      const closest = utcTimezones.reduce((prev, curr) =>
-        Math.abs(curr.offset - userOffset) < Math.abs(prev.offset - userOffset) ? curr : prev);
-      toTzSelect.value = formatOffset(closest.offset);
-    } catch (e) {
-      toTzSelect.value = "UTC+0";
-    }
-
-    const now = new Date();
-    dateInput.value = now.toISOString().split('T')[0];
-    timeInput.value = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-
-    function validateTimeFormat(timeStr) {
-      return /^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/.test(timeStr);
-    }
-
-    function parseUTCOffset(offsetStr) {
-        const match = offsetStr.match(/UTC([+-])(\d+)(?::(\d+))?/);
-        if (!match) throw new Error("Invalid UTC offset format");
-        const sign = match[1] === '+' ? 1 : -1;
-        const hours = parseInt(match[2], 10);
-        const minutes = match[3] ? parseInt(match[3], 10) : 0;
-        return sign * (hours * 60 + minutes);
-    }
-
     function convertTime() {
-      const fromTz = fromTzSelect.value;
-      const toTz = toTzSelect.value;
-      const dateStr = dateInput.value;
-      const timeStr = timeInput.value;
-
-      if (!fromTz || !toTz || !dateStr || !timeStr) {
-        resultDiv.textContent = 'Conversion Result: --';
-        return;
-      }
-
-      if (!validateTimeFormat(timeStr)) {
-        resultDiv.textContent = 'Conversion Result: Invalid time format. Use HH:mm:ss (24h)';
-        return;
-      }
-
       try {
-        const [year, month, day] = dateStr.split('-').map(Number);
-        const [fromHours, fromMinutes, fromSeconds] = timeStr.split(':').map(Number);
+        const fromTz = fromTzSelect.value;
+        const toTz = toTzSelect.value;
+        const [y, m, d] = dateInput.value.split('-').map(Number);
+        const [h, min, s] = timeInput.value.split(':').map(Number);
 
-        const totalFromOffsetMinutes = parseUTCOffset(fromTz);
-        const totalToOffsetMinutes = parseUTCOffset(toTz);
+        const parseOffset = (str) => {
+          const match = str.match(/UTC([+-])(\d+)(?::(\d+))?/);
+          return (match[1] === '+' ? 1 : -1) * (parseInt(match[2]) * 60 + (match[3] ? parseInt(match[3]) : 0));
+        };
 
-        const inputDateAsUtcComponents = new Date(Date.UTC(year, month - 1, day, fromHours, fromMinutes, fromSeconds));
-
-        const trueUtcTimestamp = inputDateAsUtcComponents.getTime() - totalFromOffsetMinutes * 60 * 1000;
-
-        const conversionResult = formatDateTimeInTargetTz(trueUtcTimestamp, totalToOffsetMinutes);
-        resultDiv.textContent = `Conversion Result: ${conversionResult} (${toTz})`;
-
-      } catch (e) {
-        resultDiv.textContent = 'Conversion Result: Error during conversion';
-      }
+        const trueUtc = Date.UTC(y, m - 1, d, h, min, s) - (parseOffset(fromTz) * 60000);
+        resultDiv.textContent = `Conversion Result: ${formatDateTimeInTargetTz(trueUtc, parseOffset(toTz))} (${toTz})`;
+      } catch (e) { resultDiv.textContent = 'Conversion Result: --'; }
     }
 
-    timeInput.addEventListener('input', (event) => {
-      const input = event.target;
-      let value = input.value.replace(/\D/g, '');
-      const oldLength = input.value.length;
-      const oldCursorPos = input.selectionStart;
-
-      if (value.length > 6) {
-        value = value.slice(0, 6);
-      }
-
-      let formattedValue = '';
-      if (value.length > 4) {
-        formattedValue = `${value.slice(0, 2)}:${value.slice(2, 4)}:${value.slice(4, 6)}`;
-      } else if (value.length > 2) {
-        formattedValue = `${value.slice(0, 2)}:${value.slice(2, 4)}`;
-      } else {
-        formattedValue = value;
-      }
-
-      input.value = formattedValue;
-
-      let newCursorPos = oldCursorPos;
-      const newLength = formattedValue.length;
-
-      if (oldLength < newLength) {
-          if (oldCursorPos === 2 && newLength >= 3 && formattedValue[2] === ':') {
-              newCursorPos++;
-          }
-          if (oldCursorPos === 5 && newLength >= 6 && formattedValue[5] === ':') {
-              newCursorPos++;
-          }
-      }
-
-      input.setSelectionRange(newCursorPos, newCursorPos);
-    });
-
-    ['change', 'input'].forEach(evt => {
-      fromTzSelect.addEventListener(evt, convertTime);
-      toTzSelect.addEventListener(evt, convertTime);
-      dateInput.addEventListener(evt, convertTime);
-      timeInput.addEventListener(evt, convertTime);
-    });
-
+    // Initialization
     document.addEventListener('DOMContentLoaded', () => {
-        const savedTheme = loadThemePreference();
-        if (savedTheme === 'dark') {
-            document.body.classList.add('dark');
-        }
-        updateThemeToggleText();
+        // Theme init
+        if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark');
+        buttons.themeToggle.textContent = document.body.classList.contains('dark') ? '🌞' : '🌛';
 
-        const lastActiveNav = loadActiveNav();
-        let groupsToDisplay = [];
-        let buttonToActivate = buttons.all.id;
+        // Countdown Text Setup
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        document.getElementById('release-title').textContent = `Countdown to ${COUNTDOWN_CONFIG.title}`;
+        document.getElementById('release-schedule').textContent = `Update Schedule: ${monthNames[COUNTDOWN_CONFIG.month-1]} ${COUNTDOWN_CONFIG.day}, ${COUNTDOWN_CONFIG.year} ${pad(COUNTDOWN_CONFIG.hour)}:${pad(COUNTDOWN_CONFIG.minute)} (UTC${COUNTDOWN_CONFIG.timezoneOffset >= 0 ? '+' : ''}${COUNTDOWN_CONFIG.timezoneOffset})`;
 
-        if (lastActiveNav === buttons.as.id) {
-            groupsToDisplay = cardGroups.AS_ONLY;
-            buttonToActivate = buttons.as.id;
-        } else if (lastActiveNav === buttons.eu.id) {
-            groupsToDisplay = cardGroups.EU_ONLY;
-            buttonToActivate = buttons.eu.id;
-        } else if (lastActiveNav === buttons.na.id) {
-            groupsToDisplay = cardGroups.NA_ONLY;
-            buttonToActivate = buttons.na.id;
-        } else if (lastActiveNav === buttons.tc.id) {
-            groupsToDisplay = cardGroups.TC_ONLY;
-            buttonToActivate = buttons.tc.id;
-        }
-        else {
-            groupsToDisplay = cardGroups.ALL_CONTENT;
-            buttonToActivate = buttons.all.id;
-        }
+        // TC Setup
+        populateDropdown(fromTzSelect); populateDropdown(toTzSelect);
+        fromTzSelect.value = "UTC+8";
+        const now = new Date();
+        dateInput.value = now.toISOString().split('T')[0];
+        timeInput.value = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
 
-        showCards(groupsToDisplay);
-        activateButton(buttonToActivate);
+        // Nav init
+        const lastBtn = loadActiveNav();
+        const map = { btnAsia: cardGroups.AS_ONLY, btnEurope: cardGroups.EU_ONLY, btnNA: cardGroups.NA_ONLY, btnTC: cardGroups.TC_ONLY };
+        showCards(map[lastBtn] || cardGroups.ALL_CONTENT);
+        activateButton(lastBtn);
 
+        // Loops
         setInterval(initializeClocks, 1000);
         initializeClocks();
         convertTime();
     });
+
+    // Event Listeners for TC
+    [fromTzSelect, toTzSelect, dateInput, timeInput].forEach(el => el.addEventListener('input', convertTime));
   </script>
 </body>
 </html>
-
