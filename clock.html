@@ -741,7 +741,7 @@
         // Countdown Text Setup
         const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         document.getElementById('release-title').textContent = `Countdown to ${COUNTDOWN_CONFIG.title}`;
-        document.getElementById('release-schedule').textContent = `Update Schedule: ${monthNames[COUNTDOWN_CONFIG.month-1]} ${COUNTDOWN_CONFIG.day}, ${COUNTDOWN_CONFIG.year} ${pad(COUNTDOWN_CONFIG.hour)}:${pad(COUNTDOWN_CONFIG.minute)} (UTC${COUNTDOWN_CONFIG.timezoneOffset >= 0 ? '+' : ''}${COUNTDOWN_CONFIG.timezoneOffset})`;
+        document.getElementById('release-schedule').textContent = `Update Will Be Live On: ${monthNames[COUNTDOWN_CONFIG.month-1]} ${COUNTDOWN_CONFIG.day}, ${COUNTDOWN_CONFIG.year} ${pad(COUNTDOWN_CONFIG.hour)}:${pad(COUNTDOWN_CONFIG.minute)} (UTC${COUNTDOWN_CONFIG.timezoneOffset >= 0 ? '+' : ''}${COUNTDOWN_CONFIG.timezoneOffset})`;
 
         // TC Setup
         populateDropdown(fromTzSelect); populateDropdown(toTzSelect);
@@ -767,5 +767,6 @@
   </script>
 </body>
 </html>
+
 
 
